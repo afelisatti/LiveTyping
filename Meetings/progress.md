@@ -12,7 +12,7 @@
 	* Update VM sources to an updated version that doesn't break the display on Mac.
 	* Identify how to do "isKindOf:" from the VM to start supporting all Collections.
 	* Decouple the Collection instance from its type information with a mediator so that it's not necessary to change the classes instance variables (which is not allowed in most classes).
-	* Revisit aliasing issues.
+	* Revisit aliasing issues: we are currently storing many collection content types in a type array instead of, for example, collapsing them.
 
 ## Questions
 
