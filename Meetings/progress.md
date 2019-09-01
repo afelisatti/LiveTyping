@@ -1,3 +1,16 @@
+# Sunday September 1
+
+## Update
+
+* Latest VMs of opensmalltalk are still broken. The update of trunk hangs.
+* Discussed options to support all Collections. We couldn't find a method that works as "kindOf:" in the VM but we think we could expose an array in the special objects array containing all collection classes and check that way.
+* Part of the problem of supporting all Collections is the fact that we couldn't add an instance variable to all of them as we have in our own implementation. This partly happens because of Array not being a proper Object but also because there are so many live instances of Collections that things start to break when a new instance variable is added to them (for example, with Dictionary). We've discussed indirection solutions for this: having a mediator object which, using weak references, for each collection can give us their type array. During the initialization of a Collection we would create their array in the mediator and use the mediator in the VM to find the arrays. Since in the VM we cannot execute code that means looking in all of the array for the data, and we've seen there over 100k instances of Array alone. A high performance penalty might be payed for such a solution.
+* We will implement the solution and see the impact it has.
+
+## Questions
+
+* Is there a way to evaluate the performanc of our changes?
+
 # Tuesday August 20
 
 ## Update
