@@ -1,3 +1,32 @@
+# Sunday September 15
+
+## Update
+
+* Managed to cherry-pick Mac display fix and now VM is generated with proper display handling. We couldn't update our VMMaker so it still requires a large display (Airplay) to work.
+* Incorporated missing Hernan changes (2246) to VM code.
+* Updated image based on Hernan latest (Cuis-3851) by loading our package and initializing it. Note: `specialObjectsArray` has been modified but `recreateSpecialObjectsArray` has not been recompiled.
+
+## Research
+
+* We have revisited our aliasing solution of storing multiple CollectionContentType instances on the type arrays.
+** We think it's ok because it allows Collection instances to be independent from one another and still allows us to render more accurate information on types when analysing a variable (we can collapse all stored CollectionContentType data). We are only missing the data of the Collection type itself. 
+** The other remaining problem is the storage to instances ratio: there are 10 slots for CollectionContentTypes and many instances over time. To solve this, we can put a weak reference to the Collection instance on each CollectionContentType. That way once that reference is gone and the storage is full we can collapse matching CollectionContentTypes and release slots.
+* We have evaluated the TypedArray idea:
+** We can make `Array new` (and all constructors) start returning a TypedArray, a polymorphic class with a CollectionContentType instance variable (since heritance would constrain us to the non instance variable world of Arrays).
+** For future extensibility we could override the `messageDoesNotUnderstand` to create the missing methods in TypedArray.
+** TypedArray would intercept the `at:put:` method to store the types being used, meaning we would need no context looping magic on the VM primitive to get types.
+** Our current VM changes in `keepTypeInformationFor:on:` would still apply, only we would use an Array of known Collection classes and where their internal TypedArray are positioned, to reach the required CollectionContentType.
+** In this case the Collection type itself for the aliasing issue could be obtained analysing the sender of a TypedArray initialization.
+** Note: we may need some classes to instantiate actual Arrays, for example, CollectionContentType or even the Arrays used for raw types.
+
+## Questions
+
+* How can we update the LiveTyping package? We tried but the installer assumes the package has never been installed and does not seem to have a uninstall feature.
+* The custom collection solution is working with some work left to do (alising optimizations and cache workaround). The way we see it we have 3 options and they depend on how much work on the tooling we have ahead of us:
+** we can discard the custom collection approach and work on the TypedArray
+** work on both and compare them as part of our thesis
+** finish the custom collection approach and mention the TypedArray as future work
+
 # Sunday September 1
 
 ## Update
