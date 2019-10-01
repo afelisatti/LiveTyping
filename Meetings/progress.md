@@ -1,3 +1,27 @@
+# Sunday September 29
+
+## Update
+
+* Review usage of Array in OrderedCollection, used Array messages are:
+    * At:put:
+    * CopyFrom: to: (asNewArray)
+    * At: (at:)
+    * Size
+    * Array new: aSize (initializeofSize: aSize)
+    * replaceFrom: to: with: startingAt: (insert: before:)
+    * From: to: put: (makeRoomAtFirst)
+    * <- anArray (setCollection:)
+    * <- anArray (setContents:)
+    * mergeSortFrom: to: by: 
+    * Swap: with: (SortedColletion>>defaultSort:to:
+    * Copy (SortedCollection>>postCopy)
+    * quickSortFrom: to: (SortedCollection>>reSort).
+* Create TypedArray and start reviewing each method
+    * MessageNotUnderstood implemented for both class and instance to proxy every message.
+    * Reimplement messages that exist in object, such as: at:put:, at:, size.
+    * Adding testing coverage as we follow through is of the methods being used.
+* Revisit in the image all the changes required for the new aliasing implementation using TypedArray (several changes must be rollbacked for the later).
+
 # Sunday September 15
 
 ## Update
