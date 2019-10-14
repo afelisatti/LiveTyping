@@ -1,3 +1,21 @@
+# Monday October 14
+
+## Update
+
+* Fixed all tests for collection usage and added missing ones for other addition methods.
+* Introduced the collection type to `CollectionContentType` as required for the aliasing algorithm.
+* Identified conflicting scenarios for aliasing (when the collection type matches):
+    * Merge: the `CollectionContentType` instances of the collections involved both contain data.
+    * Replace: at least one of the `CollectionContentType` instances is empty.
+* Identified aliasing scenarios:
+    * External: a variable/return type/method parameter is assigned a collection that had been assigned to another variable/return type/method parameter.
+    * Internal: a variable/return type/method parameter which had already been assigned a collection is now assigned another one.
+    
+## Questions
+
+* To store the type of collection involved with a `CollectionContentType` we are traversing the call contexts. What should we do if there is no `Collection` in the context? Right now the type of collection remains `nil`.
+    
+
 # Sunday September 29
 
 ## Update
