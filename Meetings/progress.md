@@ -1,3 +1,17 @@
+# Sunday October 20
+
+## Update
+
+* Defined merging should be image based when collections are from different variables.
+* Identified CollectionContentTypes possible states.
+* Created tests for all aliasing scenarios before doing any changes to the VM.
+* Added 'isAssigned' inst var to CollectionsContentType for tri-valued logic in aliasing (empty, assigned, in use).
+* Updated CollectionLiveTyping>>initialize message to update specialObjectsArray. The TypedArrayCollection lives within an Array so that VM algorithm can automatically support other collections in the future.
+
+## TODO
+
+* Implement TypedArrayCollection support in VM as well as making every test pass green (tests 32 to 40 are now failing, all related to aliasing algorithm).
+
 # Monday October 14
 
 ## Update
