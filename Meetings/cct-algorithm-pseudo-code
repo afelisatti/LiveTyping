@@ -1,0 +1,40 @@
+// NOT FIXED problem: If var A collects info of var A and B, B only collects for B
+
+keepTypeInformationIn: types for: anAssignedObject 
+	
+	if (anAssignedObject isCollection)
+		contentType = anAssignedObject contentTypes
+
+		if (contentType varAt: assigned)
+			// copy the value directly and resolve in image
+			if (not contentType in types)
+				types put: contentType
+		else
+			if (contentType type in types)
+				storedType = types get: contentType type
+				merge: storedType with: contentType
+				anAssignedObject typedArray put: storedType varAt: 3
+			else
+				// copy the value directly and marked as assigned
+				contentType put: true varAt: assigned
+				types put: contentType
+	else
+		if (not anAssignedObject type in types)
+			types put: anAssignedObject type
+
+merge: storedType with: contentType
+	foreach type in contentType
+		if (not type in storeType contents)
+			storedType put: type			
+
+isCollection: anAssignedObject
+	anAssignedObject type in (specialObjectsArray get: collectionsArray)
+
+contentTypes: anAssignedObject
+	anAssignedObject typedArray
+	return typedArray varAt: 3
+
+typedArray: anAssignedObject
+	index = (specialObjectsArray get: collectionsArray) indexOf: anAssignedObject type
+	typedArrayIndex = (specialObjectsArray get: collectionsIndex) at: index
+	return anAssignedObject varAt: typedArrayIndex	
