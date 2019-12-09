@@ -1,3 +1,23 @@
+# Sunday December 8
+
+* [BUG] Return types are not being collected when bytecode is `Quick return field 0 (0-based)`
+* We removed the return type for every class method in TypedArrayCollection and Collection (for the with: method)
+* Migrated all tests to TypedArrayCollection.
+* [BUG] test035 is broken, seems that though we create the aliasing, we are not merging properly.
+* [WARN] We are forcing cleanup AdditionalMethodState on testSetup
+
+TODO:
+
+* We need to test this on an actual scenario, to see whether aliasing is actually a problem.
+* `IsAssigned` is set on the first keepTypeInfo, but that could be used for method param, not assignment?? TODO check if this is true
+
+
+# Sunday December 1
+
+* Debugged and fixed several more bugs: missing null checks, integer conversions and some wrong logic.
+* Validated changes: algorithm is working and content types are bien stored for all live typing instances (instance variables, method variables and return types). However, the aliasing mechanism is being applied to newly created collections instances, which means all of them sharing the same content types. E.g. the first time a type aware collection is created through a initialization method, its content type is stored as return type of that method causing the second instantiation to override its content type with the stored one. 
+* We need to think this through carefully as perhaps aliasing should only be applied to instance variables or live typing avoided for “generic classes” where types will never be fixed.
+
 # Sunday October 20
 
 ## Update
