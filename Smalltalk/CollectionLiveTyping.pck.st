@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #3851] on 15 December 2019 at 6:32:06 pm'!
+'From Cuis 5.0 [latest update: #3851] on 22 December 2019 at 10:21:56 pm'!
 'Description Please enter a description for this package'!
-!provides: 'CollectionLiveTyping' 1 2!
+!provides: 'CollectionLiveTyping' 1 3!
 SystemOrganization addCategory: #'CollectionLiveTyping-Tests'!
 SystemOrganization addCategory: #CollectionLiveTyping!
 
@@ -43,6 +43,16 @@ TestCase subclass: #LiveTypingCollectionTests
 	category: 'CollectionLiveTyping-Tests'!
 !classDefinition: 'LiveTypingCollectionTests class' category: #'CollectionLiveTyping-Tests'!
 LiveTypingCollectionTests class
+	instanceVariableNames: ''!
+
+!classDefinition: #XXXTypeInfo category: #CollectionLiveTyping!
+VariableTypeInfo subclass: #XXXTypeInfo
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping'!
+!classDefinition: 'XXXTypeInfo class' category: #CollectionLiveTyping!
+XXXTypeInfo class
 	instanceVariableNames: ''!
 
 !classDefinition: #ATestClassForCollections category: #'CollectionLiveTyping-Tests'!
@@ -117,6 +127,14 @@ printOn: aStream
 
 	self printNameOn: aStream.
 	self printElementsOn: aStream! !
+
+!CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/22/2019 21:04:25'!
+typeName
+	^collectionType printString, ((XXXTypeInfo new: contentTypes) printTypesUpTo: 5)! !
+
+!CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/17/2019 09:49:01'!
+withAllSuperclasses
+	^Array with: collectionType.! !
 
 !TypedArrayCollection methodsFor: 'as yet unclassified' stamp: 'alf & mds 10/6/2019 20:12:02'!
 contentTypes
@@ -886,6 +904,161 @@ test040CollectionsContentTypeIsAssignedCollectionAssignedToVariable
 	
 	self assert: test retrieve contentTypes isAssigned equals: true.! !
 
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 20:31:38'!
+assertTooltipIs: aMessage 
+	| tooltipMessage |
+	tooltipMessage := (ATestClassForCollections typeInfoOfInstanceVariableNamed: 'instanceVariable') printTypesUpTo: 5.
+	self assert: tooltipMessage = aMessage.! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 20:31:09'!
+test041TooltipForEmptyCollection
+
+	ATestClassForCollections new store: TypedArrayCollection new.
+	self assertTooltipIs: '<TypedArrayCollection<?>>'.
+! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 20:31:58'!
+test042TooltipForSingleItemCollection
+
+	ATestClassForCollections new store: (TypedArrayCollection with: 1).
+	self assertTooltipIs:'<TypedArrayCollection<SmallInteger>>'.! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:02:43'!
+test043TooltipForTwoItemsWhenSupertypeIsObject
+
+	ATestClassForCollections new store: (TypedArrayCollection with: 1 with: 'aString').
+	self assertTooltipIs: '<TypedArrayCollection<any # SmallInteger | String>>'.! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:02:33'!
+test044TooltipForTwoItemsWithCommonSupertype
+
+	ATestClassForCollections new store: (TypedArrayCollection with: 42 with: 66.6).
+	self assertTooltipIs: '<TypedArrayCollection<Number # SmallInteger | SmallFloat64>>'.! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:06:04'!
+test045TooltipForVariableWithCollectionAndSomeOtherType
+
+	ATestClassForCollections new store: '42'.
+	ATestClassForCollections new store: (TypedArrayCollection with: 42).
+	self assertTooltipIs: '<any # String | TypedArrayCollection<SmallInteger>>'.! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:27:04'!
+test046TooltipForMergedCollections
+
+	ATestClassForCollections new store: (TypedArrayCollection with: '42').
+	ATestClassForCollections new store: (TypedArrayCollection with: 42).
+	self assertTooltipIs: '<TypedArrayCollection<any # String | SmallInteger>>'.! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:35:35'!
+test047TooltipForSameCollectionsWithSameTypes
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: 666.
+	ATestClassForCollections new store: (TypedArrayCollection with: 42).
+	ATestClassForCollections new store: localCollection.
+	self assertTooltipIs: '<TypedArrayCollection<SmallInteger>>'.! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:38:50'!
+test048TooltipForSameCollectionsWithCommonSuperTypes
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: 66.6.
+	ATestClassForCollections new store: (TypedArrayCollection with: 42).
+	ATestClassForCollections new store: localCollection.
+	self assertTooltipIs: '<TypedArrayCollection<Number # SmallFloat64 | SmallInteger>>'.! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:38:34'!
+test049TooltipForSameCollectionsWithNoSuperTypes
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: 66.6.
+	ATestClassForCollections new store: (TypedArrayCollection with: '42').
+	ATestClassForCollections new store: localCollection.
+	self assertTooltipIs: '<TypedArrayCollection<any # SmallFloat64 | String>>'.! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:43:22'!
+test050TooltipForCommonSuperCollectionsWithCommonSuperTypes
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: 'Hello'.
+	ATestClassForCollections new store: (TypedArrayCollection2 with: 'world').
+	ATestClassForCollections new store: localCollection.
+	self fail.
+	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection | TypedArrayCollection2 <String>>'."
+	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection<String> | TypedArrayCollection2 <String>>'."! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:55:00'!
+test051TooltipForNestedCollections
+	ATestClassForCollections new store: (TypedArrayCollection with: (TypedArrayCollection with: '42')).
+	self assertTooltipIs: '<TypedArrayCollection<TypedArrayCollection<String>>>'.! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:57:56'!
+test052TooltipForCommonSuperCollectionsWithNoSuperTypes
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: 'Hello'.
+	ATestClassForCollections new store: (TypedArrayCollection2 with: 42).
+	ATestClassForCollections new store: localCollection.
+	self fail.
+	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection | TypedArrayCollection2 <any # String | SmallInteger>>'."
+	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection<String> | TypedArrayCollection2 <SmallInteger>>'."! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:59:54'!
+test053TooltipForCommonSuperCollectionsRepeatedWithNoSuperTypes
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: 'Hello'.
+	ATestClassForCollections new store: (TypedArrayCollection2 with: 42).
+	ATestClassForCollections new store: localCollection.
+	ATestClassForCollections new store: (TypedArrayCollection with: 42).
+	self fail.
+	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection | TypedArrayCollection2 <any # String | SmallInteger>>'."
+	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection<any # String | SmallInteger> | TypedArrayCollection2 <SmallInteger>>'."! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 22:02:22'!
+test054TooltipForCommonSuperCollectionsWithEmptyCollections
+	| localCollection |
+	
+	localCollection := TypedArrayCollection new.
+	ATestClassForCollections new store: (TypedArrayCollection2 new).
+	ATestClassForCollections new store: localCollection.
+	self fail.
+	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection | TypedArrayCollection2 <?>>'."
+	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection<?> | TypedArrayCollection2 <?>>'."! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 22:02:01'!
+test055TooltipForCommonSuperCollectionsWithAnEmptyCollection
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: 'Hello'.
+	ATestClassForCollections new store: (TypedArrayCollection2 new).
+	ATestClassForCollections new store: localCollection.
+	self fail.
+	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection | TypedArrayCollection2 <String>>'."
+	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection<String> | TypedArrayCollection2 <?>>'."! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 22:09:11'!
+test056TooltipForCommonSuperCollectionsAndNoCollection
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: 'Hello'.
+	ATestClassForCollections new store: (TypedArrayCollection2 new).
+	ATestClassForCollections new store: localCollection.
+	ATestClassForCollections new store: 'world'.
+	self fail.
+	"self assertTooltipIs: '<any # TypedArrayCollection<String> | TypedArrayCollection2<?> | String>'."! !
+
+!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 22:10:26'!
+test057TooltipForCommonSuperTypeAndNoCommonType
+	ATestClassForCollections new store: 42.
+	ATestClassForCollections new store: 66.6.
+	ATestClassForCollections new store: 'world'.
+	self assertTooltipIs: '<any # SmallInteger | SmallFloat64 | String>'.! !
+
+!XXXTypeInfo class methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/22/2019 20:57:15'!
+new: rawTypes
+	^ self new initializeRawTypes: rawTypes.! !
+
 !ATestClassForCollections methodsFor: 'as yet unclassified' stamp: 'ALF - MDS 10/20/2019 17:33:22'!
 rawTypes
 
@@ -920,7 +1093,7 @@ store: aCollection
 
 	instanceVariable := aCollection.! !
 
-!CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'alf & mds 10/8/2019 09:42:30'!
+!CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/22/2019 22:15:11'!
 add: aClass 
 	|freeIndex|
 	"TODO: Recorrer una sola vez en vez de includes y findFirst"
@@ -990,11 +1163,12 @@ at: anIndex
 
 	^ innerArray at: anIndex.! !
 
-!TypedArray methodsFor: 'as yet unclassified' stamp: 'alf & mds 10/6/2019 19:25:48'!
+!TypedArray methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/22/2019 21:53:37'!
 at: anIndex put: aValue
 
 	|innerReturn|
 	innerReturn := innerArray at: anIndex put: aValue.
+	"TODO: if the value is an instance of SupportedTypes we should... WTF"
 	types add: aValue class.
 	^innerReturn.
 	! !
