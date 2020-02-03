@@ -1,4 +1,28 @@
+# Sunday February 2
+
+## Update
+
+* Splitted entities such as SupertypeDetective and TypePrinter for printing type info.
+* Added new test cases for tooltip coverage.
+
+## TODO
+
+* Left some legacy code within the TypeInfo hierarchy we need to review (it is used everywhere and we don't know how many tests it has).
+* Some test are failing just because of the order in which classes are printed, we need to try and apply some order there. 
+
+
+# Sunday January 12
+
+## Update
+
+* It's been a long time since we last annotated our progress.
+* VM changes are done. We are working on the image side.
+* Working on the tooltip and how it is showned.
+* [QQ] Why does Array implements the message >>types? 
+
 # Sunday December 8
+
+## Update
 
 * [BUG] Return types are not being collected when bytecode is `Quick return field 0 (0-based)`
 * We removed the return type for every class method in TypedArrayCollection and Collection (for the with: method)
@@ -6,13 +30,15 @@
 * [BUG] test035 is broken, seems that though we create the aliasing, we are not merging properly.
 * [WARN] We are forcing cleanup AdditionalMethodState on testSetup
 
-TODO:
+## TODO
 
 * We need to test this on an actual scenario, to see whether aliasing is actually a problem.
 * `IsAssigned` is set on the first keepTypeInfo, but that could be used for method param, not assignment?? TODO check if this is true
 
 
 # Sunday December 1
+
+## Update
 
 * Debugged and fixed several more bugs: missing null checks, integer conversions and some wrong logic.
 * Validated changes: algorithm is working and content types are bien stored for all live typing instances (instance variables, method variables and return types). However, the aliasing mechanism is being applied to newly created collections instances, which means all of them sharing the same content types. E.g. the first time a type aware collection is created through a initialization method, its content type is stored as return type of that method causing the second instantiation to override its content type with the stored one. 
