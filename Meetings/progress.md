@@ -1,3 +1,23 @@
+# Tuesday February 12
+
+## Update
+
+* Finished implemeting SystemType hierarchy to solve tooling issue with printing.
+
+## Questions
+
+* Should the supertype of a fixed type and an empty one be ProtoObject or Object? We are considering the nil/Object hierarchy here.
+    --> Evaluate UNION TYPE
+
+
+# Tuesday February 4
+
+## Update
+
+* Brainstormed ideas to print our 4 scenarios: no types, all class types, only collection type and a mix of class and collection types. Mariano suggested transforming the raw types into a proper type hierarchy (class vs generic types) before printing and creating a supertype logic for them which would allow a single printer for all scenarios: print supertype if more than one, print single types. While discussing that, we realized it would be a general approach to generics considering a type to be a principal type and a listing of generic types (a class type would be one with no generics and a Dictionary would have 2 generic types, for example).
+* Discussed how to generalize the generics issue on the raw types as well. Proposal: users could select they want to handle generics on a class which would add a "GenericTypesCollector" as an instance variable, then they would select "collection methods" indicating whether a certain parameter or return type should be used. For us this would mean recompiling the method to store the selected data on the collector and adding the class as a generic one (to our special object list) and the instance variable index as a generic direction (to our special object index list). Note that this last listing should actually be a path to follow to the collector since for our type arrays it is nested.
+* Our solution should be adapted to handle multiple generics since "CollectionContentTypes" is only storing one.
+
 # Sunday February 2
 
 ## Update
