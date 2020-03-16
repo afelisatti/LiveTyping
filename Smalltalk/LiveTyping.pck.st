@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #3846] on 30 August 2019 at 12:00:02 am'!
-'Description Actual scope label change.'!
-!provides: 'LiveTyping' 1 46!
+'From Cuis 5.0 [latest update: #3851] on 15 March 2020 at 10:57:08 pm'!
+'Description Type checking improvements and support for x ifNotNil: [ ^... ] and the like'!
+!provides: 'LiveTyping' 1 42!
 !requires: '__LiveTyping-TestData__' 1 0 nil!
 !requires: 'BaseImageTests' 1 127 nil!
 SystemOrganization addCategory: #LiveTyping!
@@ -591,8 +591,18 @@ Object subclass: #SenderInfo
 SenderInfo class
 	instanceVariableNames: ''!
 
+!classDefinition: #TypeInfo category: #LiveTyping!
+Object subclass: #TypeInfo
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'LiveTyping'!
+!classDefinition: 'TypeInfo class' category: #LiveTyping!
+TypeInfo class
+	instanceVariableNames: ''!
+
 !classDefinition: #VariableTypeInfo category: #LiveTyping!
-Object subclass: #VariableTypeInfo
+TypeInfo subclass: #VariableTypeInfo
 	instanceVariableNames: 'rawTypes'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -1116,7 +1126,7 @@ initializeTypeInformation
 	MethodVariablesTypes initializeForAllClasses.
 ! !
 
-!VariableTypeInfo methodsFor: 'printing' stamp: 'HAW 10/23/2018 16:08:24'!
+!TypeInfo methodsFor: 'as yet unclassified' stamp: 'alf & mds 1/12/2020 22:01:56'!
 printOn: aStream
 
 	aStream 
@@ -1742,28 +1752,6 @@ builderForIfNotNil: aMessageNode
 		rejectingDuring: aMessageNode arguments first 
 		! !
 
-!MethodTypeCheckerVisitor methodsFor: 'casting applier builder' stamp: 'HAW 8/23/2019 15:20:31'!
-builderForIfWithMessageNodeAsCondition: aMessageNode
-
-	| condition |
-	 
-	condition := aMessageNode receiverOrCascadeReceiver.
-	condition isIsNil ifTrue: [^self builderForIsNilCheck: aMessageNode ].
-	condition isNotNil ifTrue: [^self builderForNotNilCheck: aMessageNode ].
-	
-	condition isEqualOrIdenticalToNil ifTrue: [ ^self builderForEqualOrIdenticalToNil: aMessageNode ].
-	condition isNilEqualOrIdenticalTo ifTrue: [ ^self builderForNilEqualOrIdenticalTo: aMessageNode ].
-	condition isObjectClassEqualOrIdenticalToClass ifTrue: [ ^self builderForEqualOrIdenticalToClass: aMessageNode ].
-	condition isClassEqualOrIdenticalToObjectClass ifTrue: [ ^self builderForClassEqualOrIdenticalTo: aMessageNode ].
-	condition isIsKindOfWithLiteralBehavior ifTrue: [ ^self builderForIsKindOf: aMessageNode ].
-	
-	condition isNotEqualOrNotIdenticalToNil ifTrue: [ ^self builderForNotEqualOrNotIdenticalToNil: aMessageNode ].
-	condition isNilNotEqualOrNotIdenticalTo ifTrue: [ ^self builderForNilNotEqualOrNotIdenticalTo: aMessageNode ].
-	condition isObjectClassNotEqualOrNotIdenticalToClass ifTrue: [ ^self builderForNotEqualOrNotIdenticalToClass: aMessageNode ].
-	condition isClassNotEqualOrNotIdenticalToObjectClass ifTrue: [ ^self builderForClassNotEqualOrNotIdenticalTo: aMessageNode ].
-	
-	^self newBuilderIfIsTypeCheck: condition in: aMessageNode ! !
-
 !MethodTypeCheckerVisitor methodsFor: 'casting applier builder' stamp: 'HAW 8/21/2019 14:25:34'!
 builderForIsKindOf: aMessageNode 
 	
@@ -1828,25 +1816,40 @@ builderForNotNilCheck: aMessageNode
 		rejectingDuring: aMessageNode arguments first 
 ! !
 
-!MethodTypeCheckerVisitor methodsFor: 'casting applier builder' stamp: 'HAW 8/23/2019 15:20:05'!
+!MethodTypeCheckerVisitor methodsFor: 'casting applier builder' stamp: 'HAW 8/21/2019 18:28:13'!
 newBuilderFor: aMessageNode
 
 	|  condition |
 
 	aMessageNode isIfNil ifTrue: [ ^self builderForIfNil: aMessageNode ].
 	aMessageNode isIfNotNil ifTrue: [ ^self builderForIfNotNil: aMessageNode ].
-	aMessageNode isIfWithMessageNodeAsCondition ifTrue: [ ^self builderForIfWithMessageNodeAsCondition: aMessageNode ].
+	
+	aMessageNode isIfWithMessageNodeAsCondition ifTrue: [
+		condition := aMessageNode receiver.
+		condition isIsNil ifTrue: [^self builderForIsNilCheck: aMessageNode ].
+		condition isNotNil ifTrue: [^self builderForNotNilCheck: aMessageNode ].
+		
+		condition isEqualOrIdenticalToNil ifTrue: [ ^self builderForEqualOrIdenticalToNil: aMessageNode ].
+		condition isNilEqualOrIdenticalTo ifTrue: [ ^self builderForNilEqualOrIdenticalTo: aMessageNode ].
+		condition isObjectClassEqualOrIdenticalToClass ifTrue: [ ^self builderForEqualOrIdenticalToClass: aMessageNode ].
+		condition isClassEqualOrIdenticalToObjectClass ifTrue: [ ^self builderForClassEqualOrIdenticalTo: aMessageNode ].
+		condition isIsKindOfWithLiteralBehavior ifTrue: [ ^self builderForIsKindOf: aMessageNode ].
+		
+		condition isNotEqualOrNotIdenticalToNil ifTrue: [ ^self builderForNotEqualOrNotIdenticalToNil: aMessageNode ].
+		condition isNilNotEqualOrNotIdenticalTo ifTrue: [ ^self builderForNilNotEqualOrNotIdenticalTo: aMessageNode ].
+		condition isObjectClassNotEqualOrNotIdenticalToClass ifTrue: [ ^self builderForNotEqualOrNotIdenticalToClass: aMessageNode ].
+		condition isClassNotEqualOrNotIdenticalToObjectClass ifTrue: [ ^self builderForClassNotEqualOrNotIdenticalTo: aMessageNode ].
+		
+		^self newBuilderIfIsTypeCheck: condition in: aMessageNode ].
+	
 	aMessageNode isAnd ifTrue: [ 
 		condition := aMessageNode receiver.
 		condition isNotNil ifTrue: [^self builderForNotNilCheck: aMessageNode ]].
-	aMessageNode isOr ifTrue: [ 
-		condition := aMessageNode receiver.
-		condition isMessageNode ifTrue: [ condition isIsNil ifTrue: [^self builderForIsNilCheck: aMessageNode ]]].
 
 	^NoTypeCastApplierBuilder new
 ! !
 
-!MethodTypeCheckerVisitor methodsFor: 'casting applier builder' stamp: 'HAW 8/22/2019 18:51:50'!
+!MethodTypeCheckerVisitor methodsFor: 'casting applier builder' stamp: 'HAW 8/21/2019 18:28:29'!
 newBuilderIfIsTypeCheck: condition in: aMessageNode
 	
 	| incompleteTypeInfoReasons types implementors typesToCastTo typesToReject |
@@ -1870,7 +1873,7 @@ newBuilderIfIsTypeCheck: condition in: aMessageNode
 		rejecting: typesToReject 
 		on: condition receiver 
 		during: aMessageNode arguments first
-		rejectingDuring: (aMessageNode arguments at: 2 ifAbsent: [ BlockNode empty ]).
+		rejectingDuring: aMessageNode arguments second.
 	! !
 
 !MethodTypeCheckerVisitor methodsFor: 'initialization' stamp: 'HAW 8/19/2019 22:48:33'!
@@ -6079,52 +6082,6 @@ test62ifNotNilifNotNilWithMoreThanAMessageSendAndNilAsValue
 	
 	self assert: typeChecker hasNoErrorsAndWarnings 	! !
 
-!MethodTypeCheckerTest methodsFor: 'tests - casting' stamp: 'HAW 8/21/2019 22:55:31'!
-test63orCheck
-
-	self assertHasNoTypeErrorsAndWarnings: #orCheck 
-	! !
-
-!MethodTypeCheckerTest methodsFor: 'tests - casting' stamp: 'HAW 8/21/2019 23:15:15'!
-test64notNilAndIfTrue
-
-	self assertHasNoTypeErrorsAndWarnings: #notNilAndIfTrue 
-	! !
-
-!MethodTypeCheckerTest methodsFor: 'tests - casting' stamp: 'HAW 8/21/2019 23:18:50'!
-test65isNilOr
-
-	self assertHasNoTypeErrorsAndWarnings: #isNilOr 
-	! !
-
-!MethodTypeCheckerTest methodsFor: 'tests - casting' stamp: 'HAW 8/22/2019 18:52:59'!
-test66DoesNotFailsWithMessageSendAsConditionOfIfTrueWithCascadeSend
-
-	self 
-		shouldnt: [ self assertHasNoTypeErrorsAndWarnings: #messageSendAsConditionOfIfTrueWithCascadeSend ] 
-		raise: Error! !
-
-!MethodTypeCheckerTest methodsFor: 'tests - casting' stamp: 'HAW 8/21/2019 23:36:35'!
-test66orWithoutMessageAsReceiverShouldNotError
-
-	self 
-		shouldnt: [ self assertHasNoTypeErrorsAndWarnings: #orWithoutMessageAsReceiver ] 
-		raise: Error! !
-
-!MethodTypeCheckerTest methodsFor: 'tests - casting' stamp: 'HAW 8/21/2019 23:36:05'!
-test67andWithoutMessageAsReceiverShouldNotError
-
-	self 
-		shouldnt: [ self assertHasNoTypeErrorsAndWarnings: #andWithoutMessageAsReceiver ] 
-		raise: Error! !
-
-!MethodTypeCheckerTest methodsFor: 'tests - casting' stamp: 'HAW 8/22/2019 16:45:43'!
-test68DoesNotFailsWithIfTrueSendInCascadeMode
-
-	self 
-		shouldnt: [ self assertHasNoTypeErrorsAndWarnings: #ifTrueCascadeSend ] 
-		raise: Error! !
-
 !MethodTypeCheckerTest methodsFor: 'tests - type checking' stamp: 'HAW 8/9/2019 09:33:17'!
 test01MethodNotAnnotatingTypesGeneratesWarning
 
@@ -8526,58 +8483,12 @@ of: aSender for: aSentImplementors
 	
 	^self new initializeOf: aSender for: aSentImplementors! !
 
-!VariableTypeInfo methodsFor: 'printing' stamp: 'HAW 8/22/2019 16:13:15'!
-print: originalTypes on: aStream upTo: aNumberOfTypes
-	
-	| types canBeNil |
-	
-	types := originalTypes asArray.
-	aStream nextPut: $<.
-
-	types isEmpty 
-		ifTrue: [ aStream nextPut: $? ]
-		ifFalse: [
-			types size > 1 ifTrue: [
-				self 
-					withCommonSupertypeDo: [ :aCommonSupertype | aStream nextPutAll: aCommonSupertype typeName ] 
-					ifGeneric: [ :aGenericType | aStream nextPutAll: 'any' ].
-				aStream nextPutAll: ' # ' ].
-			
-			(types includes: UndefinedObject) 
-				ifTrue: [
-					canBeNil := true.
-					types := types reject: [ :aType | aType = UndefinedObject ]]
-				ifFalse: [
-					canBeNil := false ].
-				
-			aNumberOfTypes < types size 
-				ifTrue: [ 
-					self printAll: (types first: aNumberOfTypes) on: aStream.
-					canBeNil ifTrue: [ aStream nextPutAll: ' | can be nil !!' ].
-					aStream nextPutAll: ' | ...' ] 
-				ifFalse: [ 
-					self printAll: types on: aStream.
-					canBeNil ifTrue: [ aStream nextPutAll: ' | can be nil !!' ]]].
-			
-	aStream nextPut: $>.
-	
-	! !
-
-!VariableTypeInfo methodsFor: 'printing' stamp: 'HAW 7/11/2019 17:08:33'!
-printAll: types on: aStream.
-
-	types
-		do: [:aType | aStream nextPutAll: aType typeName ]
-		separatedBy: [ aStream nextPutAll: ' | ' ].
-				
-! !
-
-!VariableTypeInfo methodsFor: 'printing' stamp: 'HAW 1/20/2019 20:06:40'!
+!TypeInfo methodsFor: 'as yet unclassified' stamp: 'alf & mds 1/12/2020 22:02:29'!
 printReducedTypes
 	
 	^String streamContents: [ :stream | self printReducedTypesOn: stream ]! !
 
-!VariableTypeInfo methodsFor: 'printing' stamp: 'HAW 2/19/2019 17:53:31'!
+!TypeInfo methodsFor: 'as yet unclassified' stamp: 'alf & mds 1/12/2020 22:02:51'!
 printReducedTypesOn: aStream
 
 	aStream nextPut: $<.
@@ -8598,28 +8509,21 @@ printReducedTypesOn: aStream
 	aStream nextPut: $>.
 ! !
 
-!VariableTypeInfo methodsFor: 'printing' stamp: 'HAW 1/19/2019 07:35:54'!
+!TypeInfo methodsFor: 'printing' stamp: 'alf & mds 1/12/2020 22:03:14'!
 printTypes
 	
 	^String streamContents: [ :stream | self printTypesOn: stream ]! !
 
-!VariableTypeInfo methodsFor: 'printing' stamp: 'HAW 7/11/2019 16:57:38'!
-printTypesOn: aStream
-
-	| types |
-	
-	types := self types.
-
-	self print: types on: aStream upTo: types size.
-	! !
-
-!VariableTypeInfo methodsFor: 'printing' stamp: 'HAW 8/20/2019 16:33:25'!
+!TypeInfo methodsFor: 'printing' stamp: 'alf and mtqp 2/16/2020 17:00:36'!
 printTypesOn: aStream upTo: aNumberOfTypes
 
-	self print: self types on: aStream upTo: aNumberOfTypes.
+	| liveTypes |
+	
+	liveTypes := RawToLiveTypesAdapter new adapt: self types.
+	(LiveTypesPrinter on: aStream) print: liveTypes upTo: aNumberOfTypes.
 	! !
 
-!VariableTypeInfo methodsFor: 'printing' stamp: 'HAW 7/11/2019 16:42:32'!
+!TypeInfo methodsFor: 'printing' stamp: 'alf & mds 2/2/2020 18:34:52'!
 printTypesUpTo: aNumberOfTypes
 	
 	^String streamContents: [ :stream | self printTypesOn: stream upTo: aNumberOfTypes]! !
@@ -8786,17 +8690,19 @@ addIfNoCommonSupertypeTo: allWithNoCommonSupertype
 	
 	(commonSupertype = Object or: [ commonSupertype = ProtoObject ]) ifTrue: [  allWithNoCommonSupertype add: (self identifier->self types)]! !
 
-!VariableTypeInfo methodsFor: 'common supertype' stamp: 'HAW 10/16/2018 15:18:22'!
+!VariableTypeInfo methodsFor: 'common supertype' stamp: 'alf & mds 2/2/2020 18:55:31'!
 allSupertypesOf: types
 	
+	"TODO remove this!! ALF & MDS"
 	^ types 
 		inject: types anyOne withAllSuperclasses 
 		into: [ :temporaryCommonSupertypes :type | temporaryCommonSupertypes intersection: type withAllSuperclasses ].
 ! !
 
-!VariableTypeInfo methodsFor: 'common supertype' stamp: 'HAW 10/10/2018 07:07:30'!
+!VariableTypeInfo methodsFor: 'common supertype' stamp: 'alf & mds 2/2/2020 18:55:17'!
 commonSupertype
 	
+	"TODO remove this!! ALF & MDS"
 	^self commonSupertypeIfNoTypes: [ ProtoObject ]! !
 
 !VariableTypeInfo methodsFor: 'common supertype' stamp: 'HAW 12/3/2018 12:55:49'!
@@ -8804,9 +8710,10 @@ commonSupertypeIfGeneric: genericBlock
 	
 	^self withCommonSupertypeDo: [ :aCommonSupertype | aCommonSupertype ] ifGeneric: genericBlock! !
 
-!VariableTypeInfo methodsFor: 'common supertype' stamp: 'HAW 10/16/2018 15:18:32'!
+!VariableTypeInfo methodsFor: 'common supertype' stamp: 'alf & mds 2/2/2020 18:55:23'!
 commonSupertypeIfNoTypes: aBlock
 
+	"TODO remove this!! ALF & MDS"
 	| types commonSupertypes commonSupertype |
 	
 	types := self types.
@@ -8825,21 +8732,23 @@ commonSupertypeOrCommonSelectorsPreviousToObjectIfGeneric
 	
 	^self commonSupertypeIfGeneric: [ :genericSuperclass | self commonSelectorsPreviousToObject ]! !
 
-!VariableTypeInfo methodsFor: 'common supertype' stamp: 'HAW 12/3/2018 12:54:22'!
+!VariableTypeInfo methodsFor: 'common supertype' stamp: 'alf & mds 2/2/2020 19:02:04'!
 withCommonSupertypeDo: doBlock ifGeneric: ifGenericBlock
  
+	"TODO remove this!! ALF & MDS"
 	| commonSupertype block  |
 	
-	commonSupertype := self commonSupertype.
+	commonSupertype := (SupertypeDetective new: self types) search.
 	block := (commonSupertype = Object or: [ commonSupertype = ProtoObject ])
 		ifTrue: [ ifGenericBlock ]
 		ifFalse: [ doBlock  ].
 		
 	^block value: commonSupertype ! !
 
-!VariableTypeInfo methodsFor: 'common supertype - private' stamp: 'HAW 10/15/2018 17:37:34'!
+!VariableTypeInfo methodsFor: 'common supertype - private' stamp: 'alf & mds 2/2/2020 18:55:48'!
 commonLowestTypeIn: commonSupertypes
 	
+	"TODO remove this!! ALF & MDS"
 	| commonSupertype commonSupertypeSuperclassesSize |
 	
 	commonSupertypeSuperclassesSize := 0.
@@ -9523,13 +9432,10 @@ initializeForAllClasses
 	"
 	ProtoObject withAllSubclassesDo: [ :aClass | aClass initializeMethodsTypeInformation ]! !
 
-!MethodVariablesTypes class methodsFor: 'enumeration' stamp: 'HAW 8/27/2019 07:37:11'!
+!MethodVariablesTypes class methodsFor: 'enumeration' stamp: 'HAW 10/20/2018 17:35:34'!
 of: aClass do: aBlock
 
-	aClass methodsDo: [ :aCompiledMethod | 
-		[ aBlock value: aCompiledMethod methodVariablesTypes ]
-			on: MethodNotAnnotatingTypes 
-			do: [ :error | ]]! !
+	aClass methodsDo: [ :aCompiledMethod | aBlock value: aCompiledMethod methodVariablesTypes ]! !
 
 !MethodVariablesTypes class methodsFor: 'statistics' stamp: 'HAW 3/27/2019 11:15:33'!
 numberOfRawTypesForAll
@@ -10032,10 +9938,10 @@ isFor: aParseNode
 
 	^objetToCast isSameAs: aParseNode! !
 
-!TypeCast methodsFor: 'casting' stamp: 'HAW 8/23/2019 15:54:10'!
+!TypeCast methodsFor: 'casting' stamp: 'HAW 8/19/2019 22:34:47'!
 cast: originalTypes
 
-	self subclassResponsibility! !
+	self subclassResponsibility ! !
 
 !ManyTypesCast methodsFor: 'casting' stamp: 'HAW 8/20/2019 20:30:54'!
 cast: originalTypes
@@ -11142,22 +11048,6 @@ emptyMethod
 
 	! !
 
-!TypeCheckerTestMethods methodsFor: 'other methods' stamp: 'HAW 8/22/2019 16:47:39'!
-ifTrueCascadeSend
-
-	^true
-		ifTrue: [ 1 + 1 ];
-		yourself
-! !
-
-!TypeCheckerTestMethods methodsFor: 'other methods' stamp: 'HAW 8/22/2019 18:50:52'!
-messageSendAsConditionOfIfTrueWithCascadeSend
-
-	^true not
-		ifTrue: [ 1 + 1 ];
-		yourself
-! !
-
 !TypeCheckerTestMethods methodsFor: 'other methods' stamp: 'HAW 7/19/2019 17:44:19'!
 methodNotAnnotatingTypes
 	
@@ -11193,15 +11083,6 @@ returnParameter2: anObject
 returnParameter: anObject
 
 	^anObject ! !
-
-!TypeCheckerTestMethods methodsFor: 'nil check' stamp: 'HAW 8/21/2019 23:35:58'!
-andWithoutMessageAsReceiver
-
-	| temp1 |
-	
-	temp1 := true.
-	
-	^temp1 and: [ temp1 ]! !
 
 !TypeCheckerTestMethods methodsFor: 'nil check' stamp: 'HAW 7/30/2019 14:37:10'!
 comparingForNilWithIfTrueIfFalse
@@ -11371,16 +11252,6 @@ ifNotNilWithoutBlock
 	
 	temp1 ifNotNil: temp1 + 1! !
 
-!TypeCheckerTestMethods methodsFor: 'nil check' stamp: 'HAW 8/22/2019 16:20:36'!
-ifNotNilifNotNil: value
-
-	"
-	self new ifNotNilifNotNil: nil; ifNotNilifNotNil: self new
-	"	
-	
-	self returnParameter2: nil.
-	value ifNotNil: [ :w | (w returnParameter2: 1) ifNotNil: [ :c | c + 1 ]] ! !
-
 !TypeCheckerTestMethods methodsFor: 'nil check' stamp: 'HAW 8/2/2019 16:32:12'!
 isNilCondition
 
@@ -11393,16 +11264,6 @@ isNilCondition
 	temp1 isNil ifTrue: [ temp1 subclasses ].
 	temp1 isNil ifFalse: [ temp1 + 1 ].
 ! !
-
-!TypeCheckerTestMethods methodsFor: 'nil check' stamp: 'HAW 8/21/2019 23:18:16'!
-isNilOr
-
-	| temp1 |
-	
-	temp1 := nil.
-	temp1 := 1.
-	
-	^temp1 isNil or: [ temp1 odd ]! !
 
 !TypeCheckerTestMethods methodsFor: 'nil check' stamp: 'HAW 8/2/2019 15:30:32'!
 nestedIfNilCheck
@@ -11543,18 +11404,6 @@ notNilAnd
 	
 	^temp1 notNil and: [ temp1 odd ]! !
 
-!TypeCheckerTestMethods methodsFor: 'nil check' stamp: 'HAW 8/21/2019 23:13:23'!
-notNilAndIfTrue
-
-	| temp1 temp2 |
-	
-	temp1 := nil.
-	temp1 := 1.
-	temp2 := nil.
-	temp2 := 1.
-	
-	^(temp1 notNil and: [ temp2 notNil ]) ifTrue: [ temp1 odd. temp2 odd ]! !
-
 !TypeCheckerTestMethods methodsFor: 'nil check' stamp: 'HAW 8/2/2019 17:03:12'!
 notNilCondition
 
@@ -11567,19 +11416,30 @@ notNilCondition
 	temp1 notNil ifTrue: [ temp1 + 1 ].
 	temp1 notNil ifFalse: [ temp1 subclasses ]! !
 
-!TypeCheckerTestMethods methodsFor: 'nil check' stamp: 'HAW 8/21/2019 23:36:35'!
-orWithoutMessageAsReceiver
-
-	| temp1 |
-	
-	temp1 := true.
-	
-	^temp1 or: [ temp1 ]! !
-
 !TypeCheckerTestMethods methodsFor: 'casting' stamp: 'HAW 8/9/2019 15:06:06'!
 castWithBlockInRejectBlock
 
 	nil ifNotNil: [ :temp1 | [ temp1 mod: 5 ] value ]! !
+
+!TypeCheckerTestMethods methodsFor: 'casting' stamp: 'HAW 8/21/2019 19:57:57'!
+ifNotNilifNotNil
+
+	"
+	self new ifNotNilifNotNil
+	"	
+	self returnParameter: nil.
+	self returnParameter2: nil.
+	{ nil. self } do: [ :value | (self returnParameter: value) ifNotNil: [ :w | (w returnParameter2: 1) ifNotNil: [ :c | c + 1 ]]]! !
+
+!TypeCheckerTestMethods methodsFor: 'casting' stamp: 'HAW 8/21/2019 20:00:32'!
+ifNotNilifNotNil: value
+
+	"
+	self new ifNotNilifNotNil: nil; ifNotNilifNotNil: self new
+	"	
+	
+	self returnParameter2: nil.
+	value ifNotNil: [ :w | (w returnParameter2: 1) ifNotNil: [ :c | c + 1 ]]! !
 
 !TypeCheckerTestMethods methodsFor: 'casting' stamp: 'HAW 8/5/2019 17:29:32'!
 isKindOfKeepsSubtypes
@@ -11591,20 +11451,6 @@ isKindOfKeepsSubtypes
 	temp1 := LinkedList new.
 	
 	(temp1 isKindOf: Collection) ifTrue: [ temp1 addLast:1 ].! !
-
-!TypeCheckerTestMethods methodsFor: 'casting' stamp: 'HAW 8/21/2019 22:54:20'!
-orCheck
-
-	| temp1  |
-	
-	temp1 := 1.
-	temp1 := 1/3.
-	temp1 := Date today.
-	
-	(temp1 isInteger or: [ temp1 isFraction ]) ifTrue: [ temp1 odd ] ifFalse: [ temp1 year ].
-		
-
-! !
 
 !TypeCheckerTestMethods methodsFor: 'casting' stamp: 'HAW 8/2/2019 18:46:49'!
 typeCastToWithEqualOrIdenticalTo
@@ -12117,10 +11963,12 @@ indexOfInstanceVariable: anInstVarName ifAbsent: aBlock
 
 	^self allInstVarNames indexOf: anInstVarName ifAbsent: aBlock ! !
 
-!Behavior methodsFor: '*LiveTyping' stamp: 'HAW 10/4/2018 15:49:12'!
+!Behavior methodsFor: '*LiveTyping' stamp: 'alf & mtqp 12/8/2019 19:04:20'!
 initializeMethodsTypeInformation
 
-	self methodsDo: [ :aCompiledMethod | aCompiledMethod initializeTypeInformation ]! !
+	self methodsDo: [ :aCompiledMethod | 
+		"self halt."
+		aCompiledMethod initializeTypeInformation ]! !
 
 !Behavior methodsFor: '*LiveTyping' stamp: 'HAW 10/17/2018 20:30:33'!
 isSubclassesEmpty
@@ -12161,9 +12009,10 @@ createLocalInstanceVariableTypeInfoOf: anInstVarName with: types
 
 	! !
 
-!Behavior class methodsFor: '*LiveTyping' stamp: 'HAW 3/6/2019 18:39:01'!
+!Behavior class methodsFor: '*LiveTyping' stamp: 'alf & mtqp 12/8/2019 19:02:11'!
 createMethodReturnRawTypesOf: aMethod
 
+	"self halt."
 	((aMethod selector = #new or: [ aMethod selector = #new: ]) 
 		and: [ aMethod methodClass = Behavior ]) ifTrue: [ ^nil ].
 
@@ -12284,11 +12133,18 @@ createLocalInstanceVariableTypeInfoOf: anInstVarName with: types
 
 	^LocalInstanceVariableTypeInfo of: anInstVarName in: self are: types! !
 
-!ClassDescription methodsFor: '*LiveTyping-private' stamp: 'HAW 3/6/2019 18:28:57'!
+!ClassDescription methodsFor: '*LiveTyping-private' stamp: 'alf & mtqp 12/8/2019 20:41:20'!
 createMethodReturnRawTypesOf: aMethod
-		
+	|liveTypingCollections|
+			
 	aMethod isQuickReturnSelf ifTrue: [ ^nil ].
 	aMethod isReturnSpecial ifTrue: [ ^nil ].
+	
+	liveTypingCollections := (Smalltalk specialObjectsArray at: 66).
+	(liveTypingCollections includes: aMethod methodClass theNonMetaClass) ifTrue: [^ nil].
+	aMethod methodClass theNonMetaClass = Collection ifTrue: [
+		^nil
+		].
 	
 	^self createRawTypesOfSize: (self methodReturnRawTypesSizeOf: aMethod) ! !
 
@@ -12502,7 +12358,7 @@ typeInfoOfInstanceVariableNamed: anInstVarName
 
 	^self instanceVariablesTypes typeInfoOf: anInstVarName ! !
 
-!ClassDescription methodsFor: '*LiveTyping' stamp: 'HAW 10/23/2018 15:57:58'!
+!ClassDescription methodsFor: '*LiveTyping' stamp: 'alf & mtqp 12/22/2019 20:12:21'!
 typeInfoOfInstanceVariableNamed: anInstVarName ifAbsent: aBlock
 
 	^self instanceVariablesTypes typeInfoOf: anInstVarName ifAbsent: aBlock! !
@@ -13771,10 +13627,10 @@ isIfNotNil
 	
 	^self selectorSymbol = #ifNotNil:! !
 
-!MessageNode methodsFor: '*LiveTyping' stamp: 'HAW 8/22/2019 16:44:03'!
+!MessageNode methodsFor: '*LiveTyping' stamp: 'HAW 8/2/2019 19:13:23'!
 isIfWithMessageNodeAsCondition
 	
-	^self isAnyKindOfIf and: [ self receiverOrCascadeReceiver isMessageNode ]! !
+	^self isAnyKindOfIf and: [ receiver isMessageNode ]! !
 
 !MessageNode methodsFor: '*LiveTyping' stamp: 'HAW 8/3/2019 10:17:06'!
 isIsKindOfWithLiteralBehavior
@@ -13825,11 +13681,6 @@ isObjectClassNotEqualOrNotIdenticalToClass
 	^self isNotEqualOrNotIdentical and: [ self isReceiverClassMessageSend and: [ self isFirstArgumentLiteralBehavior ]]
 		
 	! !
-
-!MessageNode methodsFor: '*LiveTyping' stamp: 'HAW 8/21/2019 23:19:20'!
-isOr
-
-	^self selectorSymbol = #or:! !
 
 !MessageNode methodsFor: '*LiveTyping' stamp: 'HAW 8/2/2019 19:27:15'!
 isReceiverClassMessageSend
@@ -14072,7 +13923,7 @@ balloonTypeInfoOf: aNodeUnderCursor in: methodNode definedAt: class
 		do: [ :anError | 'Could not get type because: ', anError messageText ]
 ! !
 
-!SmalltalkEditor methodsFor: '*LiveTyping' stamp: 'HAW 7/11/2019 17:41:44'!
+!SmalltalkEditor methodsFor: '*LiveTyping' stamp: 'alf & mtqp 12/22/2019 20:08:53'!
 balloonTypeInfoOfInstanceVariableAt: mousePositionInText
 
 	| instVarName typeInfo |
@@ -14396,10 +14247,10 @@ actualImplementorsAndSendersWhenOnMessageSend
 	
 	self refactoringClass addActualImplementorsOf: oldSelector forTypes: receiverTypes to: implementors andActualSendersTo: senders inSystem: Smalltalk ! !
 
-!ChangeSelectorApplier methodsFor: '*LiveTyping' stamp: 'HAW 8/28/2019 09:21:48'!
+!ChangeSelectorApplier methodsFor: '*LiveTyping' stamp: 'HAW 8/17/2019 20:46:09'!
 actualScopeOptionLabels
 
-	^{ 'Actual/Possible Scope'. 'Actual Scope' } ! !
+	^{ 'Actual Implementors & Actual/Possible Message Sends'. 'Actual Implementors & Actual Message Sends' } ! !
 
 !ChangeSelectorApplier methodsFor: '*LiveTyping' stamp: 'HAW 8/17/2019 20:42:14'!
 canNotRefactorWithIncompleteTypeInfo

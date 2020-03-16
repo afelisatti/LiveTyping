@@ -1,3 +1,39 @@
+# Sunday March 15
+
+## Update
+
+* Added logic for nested collections. This required not only doing the same VM work on the TypedArray, but generating nested generics by making the raw to live types adapter recursive when dealing with generics.
+* Refactored tests to simplify clean up and organize them according to what they actually test. We found many aliasing issues because of faulty cleaning so we had to fix some bugs there and include clean ups in more places.
+* Fixed some shameful 1 AM code.
+* Removed unused classes and named some classes accordingly.
+
+## TODO
+
+* Honor the "upTo" parameter when printing.
+* Create a proper method for ordering the types when printing.
+* Consider whether we require some aliasing logic on the image as well.
+* Consider creating a hierarchy for type nodes so we can visit them instead of hard coding checks in the printer.
+* Consider making the supertype of two unrelated classes a union type, so we can code the "any" logic for union types instead of checking for an Object supertype.
+* Evaluate turning the solution general by first modifyng the index array in the special objects array into an index path array (this would allow to define an entire path to a "ContentTypes" object instead of having to rely on knowing the TypedArray). Extensive rename needs to be done as well.
+
+
+# Sunday February 16
+
+## TODO
+
+--> Raw Types
+[TAC<Int, Float, String>, TAC<?>, Int]
+
+--> Live Types
+[TAC<Int, Float, String>, TAC<?>, Int]
+--> Supertype
+[Object]
+
+* Map from RAW_TYPES to LiveType hierarchy MUST consider that several CCT may exist for the same Collection as they come from other variables, they are already assigned (i.e.: 
+    * [TAC<int>, int, TAC<String>] --> must convert to --> [TAC<int, String>, int] but,
+    * [TAC<int>, int, LL<String>] --> remains the same.
+* Some of the aliasing logic must be included in the image for nested scenarios: when a generic class is added as a generic of another class (i.e.: collection add: anotherCollection). As the RAW_TYPES addition is on the image (for collection), the aliasing must be replicated.
+
 # Tuesday February 12
 
 ## Update

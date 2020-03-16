@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #3851] on 22 December 2019 at 10:21:56 pm'!
+'From Cuis 5.0 [latest update: #3851] on 15 March 2020 at 10:56:38 pm'!
 'Description Please enter a description for this package'!
-!provides: 'CollectionLiveTyping' 1 3!
+!provides: 'CollectionLiveTyping' 1 4!
 SystemOrganization addCategory: #'CollectionLiveTyping-Tests'!
 SystemOrganization addCategory: #CollectionLiveTyping!
 
@@ -35,8 +35,28 @@ OrderedCollection subclass: #CollectionLiveTyping
 CollectionLiveTyping class
 	instanceVariableNames: ''!
 
+!classDefinition: #CollectionLiveTypingTest category: #'CollectionLiveTyping-Tests'!
+TestCase subclass: #CollectionLiveTypingTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping-Tests'!
+!classDefinition: 'CollectionLiveTypingTest class' category: #'CollectionLiveTyping-Tests'!
+CollectionLiveTypingTest class
+	instanceVariableNames: ''!
+
+!classDefinition: #LiveTypeTests category: #'CollectionLiveTyping-Tests'!
+CollectionLiveTypingTest subclass: #LiveTypeTests
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping-Tests'!
+!classDefinition: 'LiveTypeTests class' category: #'CollectionLiveTyping-Tests'!
+LiveTypeTests class
+	instanceVariableNames: ''!
+
 !classDefinition: #LiveTypingCollectionTests category: #'CollectionLiveTyping-Tests'!
-TestCase subclass: #LiveTypingCollectionTests
+CollectionLiveTypingTest subclass: #LiveTypingCollectionTests
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -45,14 +65,34 @@ TestCase subclass: #LiveTypingCollectionTests
 LiveTypingCollectionTests class
 	instanceVariableNames: ''!
 
-!classDefinition: #XXXTypeInfo category: #CollectionLiveTyping!
-VariableTypeInfo subclass: #XXXTypeInfo
+!classDefinition: #RawToLiveTypesAdapterTests category: #'CollectionLiveTyping-Tests'!
+CollectionLiveTypingTest subclass: #RawToLiveTypesAdapterTests
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'CollectionLiveTyping'!
-!classDefinition: 'XXXTypeInfo class' category: #CollectionLiveTyping!
-XXXTypeInfo class
+	category: 'CollectionLiveTyping-Tests'!
+!classDefinition: 'RawToLiveTypesAdapterTests class' category: #'CollectionLiveTyping-Tests'!
+RawToLiveTypesAdapterTests class
+	instanceVariableNames: ''!
+
+!classDefinition: #TooltipTests category: #'CollectionLiveTyping-Tests'!
+CollectionLiveTypingTest subclass: #TooltipTests
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping-Tests'!
+!classDefinition: 'TooltipTests class' category: #'CollectionLiveTyping-Tests'!
+TooltipTests class
+	instanceVariableNames: ''!
+
+!classDefinition: #TypeNodeTests category: #'CollectionLiveTyping-Tests'!
+CollectionLiveTypingTest subclass: #TypeNodeTests
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping-Tests'!
+!classDefinition: 'TypeNodeTests class' category: #'CollectionLiveTyping-Tests'!
+TypeNodeTests class
 	instanceVariableNames: ''!
 
 !classDefinition: #ATestClassForCollections category: #'CollectionLiveTyping-Tests'!
@@ -95,6 +135,106 @@ Object subclass: #CollectionsContentType
 CollectionsContentType class
 	instanceVariableNames: ''!
 
+!classDefinition: #LiveType category: #CollectionLiveTyping!
+Object subclass: #LiveType
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping'!
+!classDefinition: 'LiveType class' category: #CollectionLiveTyping!
+LiveType class
+	instanceVariableNames: ''!
+
+!classDefinition: #ClassLiveType category: #CollectionLiveTyping!
+LiveType subclass: #ClassLiveType
+	instanceVariableNames: 'class'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping'!
+!classDefinition: 'ClassLiveType class' category: #CollectionLiveTyping!
+ClassLiveType class
+	instanceVariableNames: ''!
+
+!classDefinition: #FixedType category: #CollectionLiveTyping!
+ClassLiveType subclass: #FixedType
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping'!
+!classDefinition: 'FixedType class' category: #CollectionLiveTyping!
+FixedType class
+	instanceVariableNames: ''!
+
+!classDefinition: #GenericType category: #CollectionLiveTyping!
+ClassLiveType subclass: #GenericType
+	instanceVariableNames: 'innerTypes'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping'!
+!classDefinition: 'GenericType class' category: #CollectionLiveTyping!
+GenericType class
+	instanceVariableNames: ''!
+
+!classDefinition: #EmptyType category: #CollectionLiveTyping!
+LiveType subclass: #EmptyType
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping'!
+!classDefinition: 'EmptyType class' category: #CollectionLiveTyping!
+EmptyType class
+	instanceVariableNames: ''!
+
+!classDefinition: #UnionType category: #CollectionLiveTyping!
+LiveType subclass: #UnionType
+	instanceVariableNames: 'types'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping'!
+!classDefinition: 'UnionType class' category: #CollectionLiveTyping!
+UnionType class
+	instanceVariableNames: ''!
+
+!classDefinition: #LiveTypesPrinter category: #CollectionLiveTyping!
+Object subclass: #LiveTypesPrinter
+	instanceVariableNames: 'stream'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping'!
+!classDefinition: 'LiveTypesPrinter class' category: #CollectionLiveTyping!
+LiveTypesPrinter class
+	instanceVariableNames: ''!
+
+!classDefinition: #RawToLiveTypesAdapter category: #CollectionLiveTyping!
+Object subclass: #RawToLiveTypesAdapter
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping'!
+!classDefinition: 'RawToLiveTypesAdapter class' category: #CollectionLiveTyping!
+RawToLiveTypesAdapter class
+	instanceVariableNames: ''!
+
+!classDefinition: #SupertypeDetective category: #CollectionLiveTyping!
+Object subclass: #SupertypeDetective
+	instanceVariableNames: 'searchingTypes'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping'!
+!classDefinition: 'SupertypeDetective class' category: #CollectionLiveTyping!
+SupertypeDetective class
+	instanceVariableNames: ''!
+
+!classDefinition: #TypeNode category: #CollectionLiveTyping!
+Object subclass: #TypeNode
+	instanceVariableNames: 'bound generics type'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping'!
+!classDefinition: 'TypeNode class' category: #CollectionLiveTyping!
+TypeNode class
+	instanceVariableNames: ''!
+
 !classDefinition: #TypedArray category: #CollectionLiveTyping!
 Object subclass: #TypedArray
 	instanceVariableNames: 'innerArray types'
@@ -121,20 +261,25 @@ createMethodReturnTypeInfoOf: aMethod
 
 	^super createMethodReturnTypeInfoOf: aMethod ! !
 
-!CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'ALF & MDS 4/21/2019 13:17:52'!
-printOn: aStream 
-	"Append a sequence of characters that identify the receiver to aStream."
-
-	self printNameOn: aStream.
-	self printElementsOn: aStream! !
-
-!CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/22/2019 21:04:25'!
-typeName
-	^collectionType printString, ((XXXTypeInfo new: contentTypes) printTypesUpTo: 5)! !
-
 !CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/17/2019 09:49:01'!
 withAllSuperclasses
 	^Array with: collectionType.! !
+
+!FixedType methodsFor: 'private' stamp: 'alf and mtqp 2/16/2020 13:51:33'!
+printOn: aStream
+	aStream nextPutAll: 'LiveType: ' , class asString! !
+
+!GenericType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 14:14:38'!
+printOn: aStream
+	aStream nextPutAll: 'GenericType: ', class asString , '<', innerTypes asString, '>'! !
+
+!UnionType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 14:14:25'!
+printOn: aStream
+	aStream nextPutAll: 'UnionType: <', types asString, '>'! !
+
+!TypeNode methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 20:08:57'!
+printOn: aStream
+	aStream nextPutAll: 'TypeNode ', type asString , '<', bound asString, '> # ' , generics asString ! !
 
 !TypedArrayCollection methodsFor: 'as yet unclassified' stamp: 'alf & mds 10/6/2019 20:12:02'!
 contentTypes
@@ -196,28 +341,257 @@ initializeCollectionLiveTyping
 			]
 		].! !
 
-!LiveTypingCollectionTests methodsFor: 'as yet unclassified' stamp: 'ALF & MDS 6/2/2019 20:42:41'!
-cleanUp
+!CollectionLiveTypingTest methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:33:05'!
+cleanUp: aClass method: aMethodSymbol
 
-	|aTestClassInstanceVariableRawTypes|
+	| returnRawTypes variablesRawTypes  |
+	variablesRawTypes := (aClass methodDictionary at: aMethodSymbol) variablesRawTypes.
+	variablesRawTypes == nil ifFalse:[
+		variablesRawTypes do:[ :variableRawTypes |
+		(1 to: 10) do: [ :index | variableRawTypes at: index put: nil]]].
+	returnRawTypes := (aClass methodDictionary at: aMethodSymbol) returnRawTypes.
+	returnRawTypes == nil ifFalse: [
+		(1 to: 10) do: [ :index | returnRawTypes at: index put: nil].
+	]! !
+
+!CollectionLiveTypingTest methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:23:04'!
+setUp
+
+	| aTestClassInstanceVariableRawTypes |
+	
+	super setUp.
+	
+	self cleanUp: Collection class method: #with:.
+	self cleanUp: Collection class method: #with:with:.
+	
+	ATestClassForCollections initializeTypeInformationWithAllInstances.	
 	aTestClassInstanceVariableRawTypes := ATestClassForCollections instanceVariablesRawTypes at: 1.
 	(1 to: 10) do: [ :index | aTestClassInstanceVariableRawTypes at: index put: nil].
 	self cleanUp: ATestClassForCollections method: #store:.
-	self cleanUp: self class method: #receiveCollection:.
-	self cleanUp: self class method: #return:.
-	self cleanUp: self class method: #returnCollection.
-	! !
+! !
 
-!LiveTypingCollectionTests methodsFor: 'as yet unclassified' stamp: 'ALF & MDS 6/2/2019 20:40:08'!
-cleanUp: aClass method: aMethodSymbol
+!CollectionLiveTypingTest methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:39:25'!
+tearDown
 
-	| returnRawTypes variablesRawTypes variableRawTypes |
-	variablesRawTypes := (aClass methodDictionary at: aMethodSymbol) variablesRawTypes.
-	variablesRawTypes == nil ifFalse:[
-		variableRawTypes := variablesRawTypes at: 1.
-		(1 to: 10) do: [ :index | variableRawTypes at: index put: nil]].
-	returnRawTypes := (aClass methodDictionary at: aMethodSymbol) returnRawTypes.
-	(1 to: 10) do: [ :index | returnRawTypes at: index put: nil].! !
+	self setUp.! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/5/2020 19:59:29'!
+test001SameType
+
+	self assert: (FixedType for: String) equals: (FixedType for: String)! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/5/2020 19:59:41'!
+test002DifferentType
+
+	self deny: (FixedType for: SmallInteger) = (FixedType for: String)! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/5/2020 20:06:37'!
+test003SameHierarchy
+
+	| int float |
+
+	int := (FixedType for: SmallInteger).
+	float := (FixedType for: Float).
+
+	self deny: int = float.
+	self assert: (int supertypeWith: (Array with: float)) equals: (FixedType for: Number).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/11/2020 19:42:49'!
+test004CommonSupertypeIsObject
+
+	| string float |
+
+	string := FixedType for: String.
+	float := FixedType for: Float.
+
+	self deny: string = float.
+	self assert: (string supertypeWith: (Array with: float)) equals: (FixedType for: Object).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 19:42:34'!
+test005SameGeneric
+
+	| aGeneric anotherGeneric |
+	
+	aGeneric := GenericType for: TypedArrayCollection withTypes: (Array with: Float with: Integer).
+	anotherGeneric := GenericType for: TypedArrayCollection withTypes: (Array with: Float with: Integer).
+
+	self assert: aGeneric equals: anotherGeneric.! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/11/2020 20:20:27'!
+test006SameGenericDifferentOrder
+
+	| aGeneric anotherGeneric |
+	
+	aGeneric := GenericType for: TypedArrayCollection withTypes: (Array with: Float with: Integer).
+	anotherGeneric := GenericType for: TypedArrayCollection withTypes: (Array with: Integer with: Float with: Integer).
+
+	self assert: aGeneric equals: anotherGeneric.! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/11/2020 20:20:13'!
+test007GenericsHandleSystemTypes
+
+	| aGeneric anotherGeneric |
+	
+	aGeneric := GenericType for: TypedArrayCollection withTypes: (Array with: Float).
+	anotherGeneric := GenericType for: TypedArrayCollection withTypes: (Array with: (FixedType for: Float)).
+
+	self assert: aGeneric equals: anotherGeneric.
+	self assert: aGeneric generics equals: (Set with: (FixedType for: Float)).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/11/2020 20:43:22'!
+test008NestedGenerics
+
+	| aGeneric anotherGeneric aGenericCollection aGenericCollection2 anotherGenericCollection|
+	
+	aGenericCollection := GenericType for: LinkedList withTypes: (Array with: Integer).
+	aGenericCollection2 := GenericType for: LinkedList withTypes: (Array with: Integer).
+	anotherGenericCollection := GenericType for: Array withTypes: Array new.
+	
+	aGeneric := GenericType for: TypedArrayCollection withTypes: (Array with: aGenericCollection with: anotherGenericCollection with: Integer).
+	anotherGeneric := GenericType for: TypedArrayCollection withTypes: (Array with: aGenericCollection2 with: anotherGenericCollection with: Integer).
+
+	self assert: aGeneric equals: anotherGeneric.
+	self assert: aGeneric generics equals: (Set with: aGenericCollection with: anotherGenericCollection with: (FixedType for: Integer)).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 19:48:17'!
+test009GenericSupertypeWithSameGenerics
+
+	| aGenericCollection aGenericCollection2|
+	
+	aGenericCollection := GenericType for: LinkedList withTypes: Integer.
+	aGenericCollection2 := GenericType for: OrderedCollection withTypes: Integer.
+
+	self assert: (aGenericCollection supertypeWith: (Array with: aGenericCollection2)) equals: (GenericType for: SequenceableCollection withTypes: Integer).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 19:34:14'!
+test010GenericSupertypeWithCommonGenerics
+
+	| aGenericCollection aGenericCollection2 commonSupertype|
+	
+	aGenericCollection := GenericType for: LinkedList withTypes: Integer.
+	aGenericCollection2 := GenericType for: OrderedCollection withTypes: Float.
+
+	commonSupertype := aGenericCollection supertypeWith: (Array with: aGenericCollection2).
+
+	self assert: commonSupertype equals: (GenericType for: SequenceableCollection withTypes: (Array with: Number)).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/12/2020 18:41:20'!
+test011FixedAgainstGenericType
+	|fixedType genericType|
+
+	fixedType := FixedType for: String.
+	genericType := GenericType for: LinkedList withTypes: (Array with: String).
+
+	self assert: (fixedType supertypeWith: genericType) equals: (FixedType for: Object).
+	self assert: (genericType supertypeWith: fixedType) equals: (FixedType for: Object).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/12/2020 19:08:04'!
+test012FixedAgainstGenericTypeInList
+	|fixedType genericType|
+
+	fixedType := FixedType for: String.
+	genericType := GenericType for: LinkedList withTypes: (Array with: String).
+
+	self assert: (fixedType supertypeWith: (Array with:(FixedType for: Integer) with: genericType)) equals: (FixedType for: Object).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/12/2020 19:07:17'!
+test013GenericAgainstFixedTypeInList
+	|fixedType genericType|
+
+	fixedType := FixedType for: String.
+	genericType := GenericType for: LinkedList withTypes: (Array with: String).
+
+	self assert: (genericType supertypeWith: (Array with: genericType with: fixedType)) equals: (FixedType for: Object).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/12/2020 19:24:21'!
+test014NestedGenerics
+	|genericType otherGenericType genericType2 otherGenericType2|
+
+	otherGenericType := GenericType for: Array withTypes: Integer.
+	otherGenericType2 := GenericType for: OrderedCollection withTypes: Float.
+
+	genericType := GenericType for: LinkedList withTypes: otherGenericType.
+	genericType2 := GenericType for: Set withTypes: otherGenericType2.
+
+	self assert: (genericType supertypeWith: genericType2) equals: (GenericType for: Collection withTypes: (GenericType for: SequenceableCollection withTypes: Number)).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/12/2020 19:34:04'!
+test015NestedGenericsWithDifferentDepth
+	|genericType fixedType genericType2 otherGenericType|
+
+	fixedType := FixedType for: Integer.
+	otherGenericType := GenericType for: OrderedCollection withTypes: Float.
+
+	genericType := GenericType for: LinkedList withTypes: otherGenericType.
+	genericType2 := GenericType for: Set withTypes: fixedType.
+
+	self assert: (genericType supertypeWith: genericType2) equals: (GenericType for: Collection withTypes: (FixedType for: Object)).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/12/2020 19:43:35'!
+test016EmptyTypeAgainstSelf
+	|empty otherEmpty|
+
+	empty := EmptyType new.
+	otherEmpty := EmptyType new.
+
+	self assert: (empty supertypeWith: otherEmpty) equals: (EmptyType new).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 13:33:54'!
+test017EmptyTypeAgainstFixedType
+	|empty fixedType|
+
+	empty := EmptyType new.
+	fixedType := FixedType for: Integer.
+
+	self assert: (empty supertypeWith: fixedType) equals: (UnionType of: (FixedType for: Integer) and: EmptyType new).
+	self assert: (fixedType supertypeWith: empty) equals: (UnionType of: EmptyType new and: (FixedType for: Integer)).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 13:34:51'!
+test018EmptyTypeAgainstGenericType
+	|empty genericType |
+
+	empty := EmptyType new.
+	genericType := GenericType for: Collection withTypes: String.
+
+	self assert: (empty supertypeWith: genericType) equals: (UnionType of: empty and: genericType).
+	self assert: (genericType supertypeWith: empty) equals: (UnionType of: empty and: genericType).! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 14:16:51'!
+test019UnionTypeCollectsTypes
+	|empty genericType fixedType unionType expectedUnionType |
+
+	empty := EmptyType new.
+	genericType := GenericType for: Collection withTypes: String.
+	unionType := UnionType of: empty and: genericType.
+
+	fixedType := FixedType for: Integer.
+	expectedUnionType :=  (UnionType of: empty and: (Array with: genericType with: fixedType)).
+
+	self assert: expectedUnionType equals: (unionType supertypeWith: fixedType).
+	self assert: expectedUnionType equals: (fixedType supertypeWith: unionType).
+! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 14:12:00'!
+test020UnionTypeAgainstSelf
+	|empty genericType unionType |
+
+	empty := EmptyType new.
+	genericType := GenericType for: Collection withTypes: String.
+	unionType := UnionType of: empty and: genericType.
+
+	self assert: (unionType supertypeWith: (UnionType of: empty and: genericType)) equals: unionType.
+! !
+
+!LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 14:12:38'!
+test021UnionTypeAgainstInnerElement
+	|empty genericType unionType |
+
+	empty := EmptyType new.
+	genericType := GenericType for: Collection withTypes: String.
+	unionType := UnionType of: empty and: genericType.
+
+	self assert: (genericType supertypeWith: unionType) equals: unionType.
+	self assert: (unionType supertypeWith: genericType) equals: unionType! !
 
 !LiveTypingCollectionTests methodsFor: 'as yet unclassified' stamp: 'ALF & MDS 6/2/2019 20:40:28'!
 receiveCollection: aCollection
@@ -231,14 +605,15 @@ return: anObject
 returnCollection
 	^ TypedArrayCollection new.! !
 
-!LiveTypingCollectionTests methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/8/2019 21:33:10'!
+!LiveTypingCollectionTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:22:55'!
 setUp
-	super setUp.
-	self cleanUp.
+
+	||
 	
+	super setUp.
+		
 	"This is required for cleaning up the temp variables of each testing method"
 	LiveTypingCollectionTests initializeTypeInformationWithAllInstances.
-	ATestClassForCollections initializeTypeInformationWithAllInstances.
 	AnotherTestClassForCollections initializeTypeInformationWithAllInstances.
 
 	 "TODO: This has to be here for now because of the with: method. We are yet to understand why the with: in Collection is creating aliasing. "
@@ -246,12 +621,10 @@ setUp
 
 "	TypedArrayCollection class initializeTypeInformationWithAllInstances."
 
-	
-! !
-
-!LiveTypingCollectionTests methodsFor: 'as yet unclassified' stamp: 'ALF & MDS 4/21/2019 13:05:18'!
-tearDown
-	self cleanUp.! !
+	self cleanUp: self class method: #receiveCollection:.
+	self cleanUp: self class method: #return:.
+	self cleanUp: self class method: #returnCollection.
+	! !
 
 !LiveTypingCollectionTests methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/8/2019 17:29:39'!
 test001AssigningACollectionToAVariable
@@ -904,53 +1277,175 @@ test040CollectionsContentTypeIsAssignedCollectionAssignedToVariable
 	
 	self assert: test retrieve contentTypes isAssigned equals: true.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 20:31:38'!
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:14:16'!
+setUp
+	super setUp.
+
+	"This is required for cleaning up the temp variables of each testing method"
+	RawToLiveTypesAdapterTests initializeTypeInformationWithAllInstances.
+
+	 "TODO: This has to be here for now because of the with: method. We are yet to understand why the with: in Collection is creating aliasing. "
+"	Collection class initializeTypeInformationWithAllInstances."
+
+"	TypedArrayCollection class initializeTypeInformationWithAllInstances."
+
+	
+! !
+
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:28:59'!
+test001EmptyRawTypes
+	| liveTypes rawTypes |
+	liveTypes := Set with: EmptyType new.
+	rawTypes := #().
+	self assert: liveTypes equals: (RawToLiveTypesAdapter new adapt: rawTypes)! !
+
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:27:31'!
+test002AllClasses
+	| liveTypes rawTypes |
+	liveTypes := Set with: (FixedType for: Integer) with: (FixedType for: String).
+	rawTypes := Array with: Integer with: String.
+	self assert: liveTypes equals: (RawToLiveTypesAdapter new adapt: rawTypes)! !
+
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:39:12'!
+test003AnEmptyCollectionsContentType
+	| liveTypes rawTypes |
+	liveTypes := Set with: (GenericType for: TypedArrayCollection withTypes: EmptyType new).
+	rawTypes := Array with: TypedArrayCollection new contentTypes.
+	self assert: liveTypes equals: (RawToLiveTypesAdapter new adapt: rawTypes)! !
+
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:38:48'!
+test004ClassesAndCollectionsContentType
+	| liveTypes rawTypes |
+	liveTypes := Set with: (GenericType for: TypedArrayCollection withTypes: EmptyType new) with: (FixedType for: String).
+	rawTypes := Array with: (TypedArrayCollection new contentTypes) with: String.
+	self assert: liveTypes equals: (RawToLiveTypesAdapter new adapt: rawTypes)! !
+
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:42:11'!
+test005ACollectionsContentTypeWithTypes
+	| liveTypes rawTypes tac |
+	liveTypes := Set with: (GenericType for: TypedArrayCollection withTypes: (Array with: SmallInteger with: SmallFloat64)).
+	tac := TypedArrayCollection new.
+	tac add: 56.
+	tac add: 33.3.
+	rawTypes := Array with: tac contentTypes.
+	self assert: liveTypes equals: (RawToLiveTypesAdapter new adapt: rawTypes)! !
+
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:45:03'!
+test006SeveralCollectionsContentTypesWithTypes
+	| liveTypes rawTypes tac1 tac2 |
+	liveTypes := Set with: (GenericType for: TypedArrayCollection withTypes: (Array with: SmallInteger with: SmallFloat64)).
+	tac1 := TypedArrayCollection new.
+	tac2 := TypedArrayCollection new.
+	tac1 add: 56.
+	tac2 add: 33.3.
+	rawTypes := Array with: tac1 contentTypes with: tac2 contentTypes.
+	self assert: liveTypes equals: (RawToLiveTypesAdapter new adapt: rawTypes)! !
+
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 20:59:00'!
+test007CreateFixedType
+
+	self assert: (FixedType for: Integer) equals: (RawToLiveTypesAdapter new create: Integer).! !
+
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 20:59:21'!
+test008CreateEmptyType
+
+	self assert: EmptyType new equals: (RawToLiveTypesAdapter new create: nil).! !
+
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 20:59:26'!
+test009CreateGenericType
+
+	| cct expectedType |
+	
+	cct := TypedArrayCollection new contentTypes.
+	expectedType := GenericType for: TypedArrayCollection withTypes: EmptyType new.
+
+	self assert: expectedType equals: (RawToLiveTypesAdapter new create: cct).! !
+
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 20:59:31'!
+test010CreateGenericNestedType
+
+	| cct expectedType collection |
+	
+	collection := TypedArrayCollection2 new.
+	cct := (TypedArrayCollection with: 12 with: collection) contentTypes.
+	expectedType := GenericType for: TypedArrayCollection withTypes: (Set with: (FixedType for: SmallInteger) with: (GenericType for: TypedArrayCollection2 withTypes: EmptyType new)).
+
+	self assert: expectedType equals: (RawToLiveTypesAdapter new create: cct).! !
+
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 20:59:37'!
+test011CreateGenericNonEmptyType
+
+	| cct expectedType |
+	
+	cct := (TypedArrayCollection with: 'hello') contentTypes.
+	expectedType := GenericType for: TypedArrayCollection withTypes: (FixedType for: String).
+
+	self assert: expectedType equals: (RawToLiveTypesAdapter new create: cct).! !
+
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:04:43'!
+test012CreateGenericMultipleNestedType
+
+	| cct expectedType |
+	
+	cct := (TypedArrayCollection2 with: (TypedArrayCollection with: 42) with: (TypedArrayCollection with: 24.0)) contentTypes.
+	expectedType := GenericType for: TypedArrayCollection2 withTypes: (GenericType for: TypedArrayCollection withTypes: (Set with: SmallInteger with: SmallFloat64)).
+
+	self assert: expectedType equals: (RawToLiveTypesAdapter new create: cct).! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:52:56'!
 assertTooltipIs: aMessage 
 	| tooltipMessage |
 	tooltipMessage := (ATestClassForCollections typeInfoOfInstanceVariableNamed: 'instanceVariable') printTypesUpTo: 5.
-	self assert: tooltipMessage = aMessage.! !
+	self assert: aMessage equals: tooltipMessage.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 20:31:09'!
-test041TooltipForEmptyCollection
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:17:16'!
+setUp
+
+	super setUp.
+	TooltipTests initializeTypeInformationWithAllInstances.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:43:25'!
+test001TooltipForEmptyCollection
 
 	ATestClassForCollections new store: TypedArrayCollection new.
 	self assertTooltipIs: '<TypedArrayCollection<?>>'.
 ! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 20:31:58'!
-test042TooltipForSingleItemCollection
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:43:50'!
+test002TooltipForSingleItemCollection
 
 	ATestClassForCollections new store: (TypedArrayCollection with: 1).
 	self assertTooltipIs:'<TypedArrayCollection<SmallInteger>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:02:43'!
-test043TooltipForTwoItemsWhenSupertypeIsObject
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:44:42'!
+test003TooltipForTwoItemsWhenSupertypeIsObject
 
 	ATestClassForCollections new store: (TypedArrayCollection with: 1 with: 'aString').
 	self assertTooltipIs: '<TypedArrayCollection<any # SmallInteger | String>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:02:33'!
-test044TooltipForTwoItemsWithCommonSupertype
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:45:16'!
+test004TooltipForTwoItemsWithCommonSupertype
 
 	ATestClassForCollections new store: (TypedArrayCollection with: 42 with: 66.6).
-	self assertTooltipIs: '<TypedArrayCollection<Number # SmallInteger | SmallFloat64>>'.! !
+	self assertTooltipIs: '<TypedArrayCollection<Number # SmallFloat64 | SmallInteger>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:06:04'!
-test045TooltipForVariableWithCollectionAndSomeOtherType
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:45:35'!
+test005TooltipForVariableWithCollectionAndSomeOtherType
 
 	ATestClassForCollections new store: '42'.
 	ATestClassForCollections new store: (TypedArrayCollection with: 42).
-	self assertTooltipIs: '<any # String | TypedArrayCollection<SmallInteger>>'.! !
+	"superclass should be collection"
+	self assertTooltipIs: '<Collection<any # Character | SmallInteger> # String | TypedArrayCollection<SmallInteger>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:27:04'!
-test046TooltipForMergedCollections
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:45:50'!
+test006TooltipForMergedCollections
 
 	ATestClassForCollections new store: (TypedArrayCollection with: '42').
 	ATestClassForCollections new store: (TypedArrayCollection with: 42).
-	self assertTooltipIs: '<TypedArrayCollection<any # String | SmallInteger>>'.! !
+	self assertTooltipIs: '<TypedArrayCollection<any # SmallInteger | String>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:35:35'!
-test047TooltipForSameCollectionsWithSameTypes
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:46:02'!
+test007TooltipForSameCollectionsWithSameTypes
 	| localCollection |
 	
 	localCollection := TypedArrayCollection with: 666.
@@ -958,8 +1453,8 @@ test047TooltipForSameCollectionsWithSameTypes
 	ATestClassForCollections new store: localCollection.
 	self assertTooltipIs: '<TypedArrayCollection<SmallInteger>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:38:50'!
-test048TooltipForSameCollectionsWithCommonSuperTypes
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:46:16'!
+test008TooltipForSameCollectionsWithCommonSuperTypes
 	| localCollection |
 	
 	localCollection := TypedArrayCollection with: 66.6.
@@ -967,8 +1462,8 @@ test048TooltipForSameCollectionsWithCommonSuperTypes
 	ATestClassForCollections new store: localCollection.
 	self assertTooltipIs: '<TypedArrayCollection<Number # SmallFloat64 | SmallInteger>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:38:34'!
-test049TooltipForSameCollectionsWithNoSuperTypes
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:46:31'!
+test009TooltipForSameCollectionsWithNoSuperTypes
 	| localCollection |
 	
 	localCollection := TypedArrayCollection with: 66.6.
@@ -976,88 +1471,324 @@ test049TooltipForSameCollectionsWithNoSuperTypes
 	ATestClassForCollections new store: localCollection.
 	self assertTooltipIs: '<TypedArrayCollection<any # SmallFloat64 | String>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:43:22'!
-test050TooltipForCommonSuperCollectionsWithCommonSuperTypes
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:46:46'!
+test010TooltipForCommonSuperCollectionsWithCommonSuperTypes
 	| localCollection |
 	
 	localCollection := TypedArrayCollection with: 'Hello'.
 	ATestClassForCollections new store: (TypedArrayCollection2 with: 'world').
 	ATestClassForCollections new store: localCollection.
-	self fail.
-	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection | TypedArrayCollection2 <String>>'."
-	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection<String> | TypedArrayCollection2 <String>>'."! !
+	self assertTooltipIs: '<TypedArrayCollection<String> # TypedArrayCollection<String> | TypedArrayCollection2<String>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:55:00'!
-test051TooltipForNestedCollections
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:47:00'!
+test011TooltipForNestedCollections
 	ATestClassForCollections new store: (TypedArrayCollection with: (TypedArrayCollection with: '42')).
 	self assertTooltipIs: '<TypedArrayCollection<TypedArrayCollection<String>>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:57:56'!
-test052TooltipForCommonSuperCollectionsWithNoSuperTypes
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:47:16'!
+test012TooltipForCommonSuperCollectionsWithNoSuperTypes
 	| localCollection |
 	
 	localCollection := TypedArrayCollection with: 'Hello'.
 	ATestClassForCollections new store: (TypedArrayCollection2 with: 42).
 	ATestClassForCollections new store: localCollection.
-	self fail.
-	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection | TypedArrayCollection2 <any # String | SmallInteger>>'."
-	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection<String> | TypedArrayCollection2 <SmallInteger>>'."! !
+	self assertTooltipIs: '<TypedArrayCollection<any # SmallInteger | String> # TypedArrayCollection<String> | TypedArrayCollection2<SmallInteger>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 21:59:54'!
-test053TooltipForCommonSuperCollectionsRepeatedWithNoSuperTypes
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:47:30'!
+test013TooltipForCommonSuperCollectionsRepeatedWithNoSuperTypes
 	| localCollection |
 	
 	localCollection := TypedArrayCollection with: 'Hello'.
 	ATestClassForCollections new store: (TypedArrayCollection2 with: 42).
 	ATestClassForCollections new store: localCollection.
 	ATestClassForCollections new store: (TypedArrayCollection with: 42).
-	self fail.
-	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection | TypedArrayCollection2 <any # String | SmallInteger>>'."
-	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection<any # String | SmallInteger> | TypedArrayCollection2 <SmallInteger>>'."! !
+	
+	self assertTooltipIs: '<TypedArrayCollection<any # SmallInteger | String> # TypedArrayCollection<any # SmallInteger | String> | TypedArrayCollection2<SmallInteger>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 22:02:22'!
-test054TooltipForCommonSuperCollectionsWithEmptyCollections
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:47:42'!
+test014TooltipForCommonSuperCollectionsWithEmptyCollections
 	| localCollection |
 	
 	localCollection := TypedArrayCollection new.
 	ATestClassForCollections new store: (TypedArrayCollection2 new).
 	ATestClassForCollections new store: localCollection.
-	self fail.
-	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection | TypedArrayCollection2 <?>>'."
-	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection<?> | TypedArrayCollection2 <?>>'."! !
+	self assertTooltipIs: '<TypedArrayCollection<?> # TypedArrayCollection<?> | TypedArrayCollection2<?>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 22:02:01'!
-test055TooltipForCommonSuperCollectionsWithAnEmptyCollection
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:47:55'!
+test015TooltipForCommonSuperCollectionsWithAnEmptyCollection
 	| localCollection |
 	
 	localCollection := TypedArrayCollection with: 'Hello'.
 	ATestClassForCollections new store: (TypedArrayCollection2 new).
 	ATestClassForCollections new store: localCollection.
-	self fail.
-	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection | TypedArrayCollection2 <String>>'."
-	"self assertTooltipIs: '<TypedArrayCollection # TypedArrayCollection<String> | TypedArrayCollection2 <?>>'."! !
+	self assertTooltipIs: '<TypedArrayCollection<any # ? | String> # TypedArrayCollection<String> | TypedArrayCollection2<?>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 22:09:11'!
-test056TooltipForCommonSuperCollectionsAndNoCollection
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:48:10'!
+test016TooltipForCommonSuperCollectionsAndNoCollection
 	| localCollection |
 	
 	localCollection := TypedArrayCollection with: 'Hello'.
 	ATestClassForCollections new store: (TypedArrayCollection2 new).
 	ATestClassForCollections new store: localCollection.
 	ATestClassForCollections new store: 'world'.
-	self fail.
-	"self assertTooltipIs: '<any # TypedArrayCollection<String> | TypedArrayCollection2<?> | String>'."! !
+	
+	self assertTooltipIs: '<any # String | TypedArrayCollection<String> | TypedArrayCollection2<?>>'.! !
 
-!LiveTypingCollectionTests methodsFor: 'tooling' stamp: 'alf & mtqp 12/22/2019 22:10:26'!
-test057TooltipForCommonSuperTypeAndNoCommonType
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:48:25'!
+test017TooltipForCommonSuperTypeAndNoCommonType
 	ATestClassForCollections new store: 42.
 	ATestClassForCollections new store: 66.6.
 	ATestClassForCollections new store: 'world'.
-	self assertTooltipIs: '<any # SmallInteger | SmallFloat64 | String>'.! !
+	self assertTooltipIs: '<any # SmallFloat64 | SmallInteger | String>'.! !
 
-!XXXTypeInfo class methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/22/2019 20:57:15'!
-new: rawTypes
-	^ self new initializeRawTypes: rawTypes.! !
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:48:40'!
+test018TooltipForCommonSuperCollectionsAndNoCollection
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: 'Hello'.
+	ATestClassForCollections new store: (TypedArrayCollection2 new).
+	ATestClassForCollections new store: localCollection.
+	ATestClassForCollections new store: 45.
+	
+	self assertTooltipIs: '<any # SmallInteger | TypedArrayCollection<String> | TypedArrayCollection2<?>>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:49:01'!
+test019TooltipForNestedCollectionsOneOfThemEmpty
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: (TypedArrayCollection new) with: (TypedArrayCollection with: 3).
+	ATestClassForCollections new store: localCollection.
+	self assertTooltipIs: '<TypedArrayCollection<TypedArrayCollection<any # ? | SmallInteger>>>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:49:21'!
+test020TooltipForNestedCollectionsBothSameTypes
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: (TypedArrayCollection with: 5) with: (TypedArrayCollection with: 3).
+	ATestClassForCollections new store: localCollection.
+	self assertTooltipIs: '<TypedArrayCollection<TypedArrayCollection<SmallInteger>>>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:49:39'!
+test021TooltipForNestedCollectionsEachNoCommonInnerType
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: (TypedArrayCollection with: 5) with: (TypedArrayCollection with: '3').
+	ATestClassForCollections new store: localCollection.
+	self assertTooltipIs: '<TypedArrayCollection<TypedArrayCollection<any # SmallInteger | String>>>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:49:52'!
+test022TooltipForNestedCommonSuperCollectionsNoCommonInnerType
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: (TypedArrayCollection with: 5) with: (TypedArrayCollection2 with: '3').
+	ATestClassForCollections new store: localCollection.
+	self assertTooltipIs: '<TypedArrayCollection<TypedArrayCollection<any # SmallInteger | String> # TypedArrayCollection<SmallInteger> | TypedArrayCollection2<String>>>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:50:05'!
+test023TooltipForNestedNoCommonSupertype
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: (TypedArrayCollection with: 5) with: 3.
+	ATestClassForCollections new store: localCollection.
+	self assertTooltipIs: '<TypedArrayCollection<any # SmallInteger | TypedArrayCollection<SmallInteger>>>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:50:19'!
+test024TooltipForNestedRepeatedTypeDifferentInners
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: (TypedArrayCollection with: 5) with: 3 with: (TypedArrayCollection with: '42').
+	ATestClassForCollections new store: localCollection.
+	self assertTooltipIs: '<TypedArrayCollection<any # SmallInteger | TypedArrayCollection<any # SmallInteger | String>>>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:50:33'!
+test025TooltipForNestedCommonTypesAndIntruder
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: (TypedArrayCollection with: 5) with: 3 with: (TypedArrayCollection2 with: '42').
+	ATestClassForCollections new store: localCollection.
+	self assertTooltipIs: '<TypedArrayCollection<any # SmallInteger | TypedArrayCollection<SmallInteger> | TypedArrayCollection2<String>>>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:50:46'!
+test026TooltipForNestedCommontTypesWithTwoLevelIntruder
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: (TypedArrayCollection with: 5) with: 3 with: (TypedArrayCollection2 with: '42').
+	ATestClassForCollections new store: localCollection.
+	ATestClassForCollections new store: 45.
+	self assertTooltipIs: '<any # SmallInteger | TypedArrayCollection<any # SmallInteger | TypedArrayCollection<SmallInteger> | TypedArrayCollection2<String>>>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:51:02'!
+test027TooltipForAwfullyComplexInnerCollections
+	| localCollection |
+	
+	localCollection := TypedArrayCollection with: (TypedArrayCollection with: 5) with: 3 with: (TypedArrayCollection2 with: '42').
+	ATestClassForCollections new store: (TypedArrayCollection2 new).
+	ATestClassForCollections new store: localCollection.
+	self assertTooltipIs: '<TypedArrayCollection<any # ? | SmallInteger | TypedArrayCollection<SmallInteger> | TypedArrayCollection2<String>> # TypedArrayCollection<any # SmallInteger | TypedArrayCollection<SmallInteger> | TypedArrayCollection2<String>> | TypedArrayCollection2<?>>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:51:25'!
+test028TooltipOnlyOneType
+	
+	ATestClassForCollections new store: 42.
+	self assertTooltipIs: '<SmallInteger>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:51:45'!
+test029TooltipCommonSuperTypeSingleClasses
+	ATestClassForCollections new store: 42.
+	ATestClassForCollections new store: 66.6.
+	self assertTooltipIs: '<Number # SmallFloat64 | SmallInteger>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:52:02'!
+test030TooltipNoTypes
+	self assertTooltipIs: '<?>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:52:28'!
+test031TooltipNoCommonSuperTypeSingleClasses
+	ATestClassForCollections new store: 42.
+	ATestClassForCollections new store: '66.6'.
+	self assertTooltipIs: '<any # SmallInteger | String>'.! !
+
+!TooltipTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:01:32'!
+test0xxValidateWhatHappensOnSuperClass
+	self fail.! !
+
+!TypeNodeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:33:09'!
+test001Empty
+	| typeTree |
+
+	typeTree := TypeNode for: EmptyType new.
+
+	self assert: EmptyType new equals: typeTree type.
+	self assert: nil equals: typeTree bound.
+	self assert: Set new equals: typeTree generics! !
+
+!TypeNodeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:33:22'!
+test002Fixed
+	| typeTree |
+
+	typeTree := TypeNode for: (FixedType for: Integer).
+
+	self assert: (FixedType for: Integer) equals: typeTree type.
+	self assert: nil equals: typeTree bound.
+	self assert: Set new equals: typeTree generics! !
+
+!TypeNodeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:33:36'!
+test003GenericSingleValue
+	| typeTree |
+
+	typeTree := TypeNode for: (GenericType for: LinkedList withTypes: Integer).
+
+	self assert: (FixedType for: LinkedList) equals: typeTree type.
+	self assert: (TypeNode for: (FixedType for: Integer)) equals: typeTree bound.
+	self assert: Set new equals: typeTree generics! !
+
+!TypeNodeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:50:14'!
+test004MultipleFixed
+	| typeTree intType floatType intNode floatNode |
+
+	intType := FixedType for: Integer.
+	floatType := FixedType for: Float.
+	typeTree := TypeNode for: (Set with: intType with: floatType).
+	intNode := TypeNode for: intType.
+	floatNode := TypeNode for: floatType.
+
+	self assert: (FixedType for: Number) equals: typeTree type.
+	self assert: nil equals: typeTree bound.
+	self assert: (Set with: intNode with: floatNode) equals: typeTree generics! !
+
+!TypeNodeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/18/2020 20:52:28'!
+test005GenericMultipleValues
+	| typeTree intType floatType intNode floatNode |
+
+	typeTree := TypeNode for: (GenericType for: LinkedList withTypes: (Array with: Integer with: Float)).
+	intType := FixedType for: Integer.
+	floatType := FixedType for: Float.
+	intNode := TypeNode for: intType.
+	floatNode := TypeNode for: floatType.
+	
+
+	self assert: (FixedType for: LinkedList) equals: typeTree type.
+	self assert: (TypeNode for: (Set with: intType with: floatType)) equals: typeTree bound.
+	self assert: (Set with: intNode with: floatNode) equals: typeTree bound generics.
+	self assert: Set new equals: typeTree generics.! !
+
+!TypeNodeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/18/2020 20:50:44'!
+test006MultipleFixedWithNoCommonSupertype
+	| typeTree intType stringType intNode stringNode |
+
+	intType := FixedType for: Integer.
+	stringType := FixedType for: String.
+	typeTree := TypeNode for: (Set with: intType with: stringType).
+	intNode := TypeNode for: intType.
+	stringNode := TypeNode for: stringType.
+
+	self assert: (FixedType for: Object) equals: typeTree type.
+	self assert: nil equals: typeTree bound.
+	self assert: (Set with: intNode with: stringNode) equals: typeTree generics! !
+
+!TypeNodeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/18/2020 21:59:36'!
+test007MultipleGenerics
+	| typeTree genericType otherGenericType genericNode otherGenericNode floatType intType floatNode intNode |
+
+	genericType := GenericType for: LinkedList withTypes: Integer.
+	otherGenericType := GenericType for: Array withTypes: Float.
+	intType := FixedType for: Integer.
+	floatType := FixedType for: Float.
+	typeTree := TypeNode for: (Set with: genericType with: otherGenericType).
+	genericNode := TypeNode for: genericType.
+	otherGenericNode := TypeNode for: otherGenericType.
+	intNode := TypeNode for: intType.
+	floatNode := TypeNode for: floatType.
+
+	self assert: (FixedType for: SequenceableCollection) equals: typeTree type.
+	self assert: (TypeNode for: (Set with: intType with: floatType)) equals: typeTree bound.
+	self assert: (Set with: intNode with: floatNode) equals: typeTree bound generics.
+	self assert: (Set with: genericNode with: otherGenericNode) equals: typeTree generics! !
+
+!TypeNodeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/18/2020 21:09:38'!
+test008GenericEmptyValue
+	| typeTree emptyType |
+
+	typeTree := TypeNode for: (GenericType for: LinkedList withTypes: EmptyType new).
+	emptyType := EmptyType new.
+	
+
+	self assert: (FixedType for: LinkedList) equals: typeTree type.
+	self assert: (TypeNode for: (Set with: emptyType)) equals: typeTree bound.
+	self assert: Set new equals: typeTree generics.! !
+
+!TypeNodeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/18/2020 22:02:24'!
+test009MultipleGenericsEmptyValue
+	| typeTree genericType otherGenericType genericNode otherGenericNode floatType emptyType emptyNode floatNode |
+
+	genericType := GenericType for: LinkedList withTypes: EmptyType new.
+	otherGenericType := GenericType for: Array withTypes: Float.
+	emptyType := EmptyType new.
+	floatType := FixedType for: Float.
+	typeTree := TypeNode for: (Set with: genericType with: otherGenericType).
+	genericNode := TypeNode for: genericType.
+	otherGenericNode := TypeNode for: otherGenericType.
+	emptyNode := TypeNode for: emptyType.
+	floatNode := TypeNode for: floatType.
+
+	self assert: (FixedType for: SequenceableCollection) equals: typeTree type.
+	self assert: (TypeNode for: (Set with: emptyType with: floatType)) equals: typeTree bound.
+	self assert: (Set with: emptyNode with: floatNode) equals: typeTree bound generics.
+	self assert: (Set with: genericNode with: otherGenericNode) equals: typeTree generics! !
+
+!TypeNodeTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/18/2020 21:52:19'!
+test010EmptyAndFixed
+	| typeTree intType emptyType intNode emptyNode |
+
+	intType := FixedType for: Integer.
+	emptyType := EmptyType new.
+	typeTree := TypeNode for: (Set with: intType with: emptyType).
+	intNode := TypeNode for: intType.
+	emptyNode := TypeNode for: emptyType.
+
+	self assert: (FixedType for: Object) equals: typeTree type.
+	self assert: nil equals: typeTree bound.
+	self assert: (Set with: intNode with: emptyNode) equals: typeTree generics! !
 
 !ATestClassForCollections methodsFor: 'as yet unclassified' stamp: 'ALF - MDS 10/20/2019 17:33:22'!
 rawTypes
@@ -1104,6 +1835,10 @@ add: aClass
 		]
 	]! !
 
+!CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/2/2020 21:20:02'!
+asString
+	^ self class asString, #- , self type asString.! !
+
 !CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'ALF & MDS 4/21/2019 12:53:59'!
 containsType: aType
 	^ contentTypes anySatisfy: [:savedType | savedType = aType].! !
@@ -1126,17 +1861,6 @@ initialize
 	isAssigned := false.
 	^ self.! !
 
-!CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'ALF & MDS 4/21/2019 13:19:28'!
-printElementsOn: aStream
-	aStream nextPut: $(.
-	contentTypes do: [:element | aStream print: element; space].
-	contentTypes isEmpty ifFalse: [aStream skip: -1].
-	aStream nextPut: $)! !
-
-!CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'ALF & MDS 4/21/2019 13:18:03'!
-printNameOn: aStream
-	super printOn: aStream! !
-
 !CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'alf & mds 10/6/2019 19:21:17'!
 size
 	|size|
@@ -1145,31 +1869,569 @@ size
 	^ size.
 	! !
 
+!CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/2/2020 21:24:09'!
+sort: types
+
+	^ types asArray sort: [:class1 :class2 | class1 asString <= class2 asString].! !
+
+!CollectionsContentType methodsFor: 'accessing' stamp: 'alf & mds 2/2/2020 21:24:23'!
+contentTypes
+
+	|nonNullTypes|
+	nonNullTypes := Set new.
+	(self sort: contentTypes) do: [:type | type ifNotNil: [nonNullTypes add: type]].
+	^ nonNullTypes.! !
+
 !CollectionsContentType methodsFor: 'accessing' stamp: 'ALF - MDS 10/20/2019 19:21:12'!
 isAssigned
 
 	^ isAssigned.! !
 
-!CollectionsContentType methodsFor: 'accessing' stamp: 'alf & mds 10/14/2019 20:11:17'!
+!CollectionsContentType methodsFor: 'accessing' stamp: 'alf & mds 2/2/2020 21:02:35'!
 type
-	^ collectionType! !
+	^ collectionType.! !
+
+!CollectionsContentType methodsFor: 'accessing' stamp: 'alf & mds 2/2/2020 21:01:22'!
+types
+	| aSet |
+	
+	aSet := Set new.
+	aSet add: collectionType.
+	^ aSet! !
 
 !CollectionsContentType class methodsFor: 'as yet unclassified' stamp: 'ALF & MDS 4/21/2019 12:54:58'!
 new
 	^super new initialize.! !
+
+!LiveType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 16:54:23'!
+accept: visitor 
+	self subclassResponsibility.! !
+
+!LiveType methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/12/2020 18:55:27'!
+sanitize: types	
+	(types isKindOf: Collection) ifFalse: [
+		^ Array with: types.
+	].
+	^ types.! !
+
+!LiveType methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/5/2020 20:06:21'!
+supertypeWith: types 
+	self subclassResponsibility.! !
+
+!LiveType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 19:05:11'!
+unifiesWith: anotherType
+	^ false.! !
+
+!LiveType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 19:09:00'!
+unify: anotherType
+	self subclassResponsibility.! !
+
+!ClassLiveType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 21:40:51'!
+<= anotherType
+	(anotherType isKindOf: ClassLiveType) 
+		ifTrue: [
+			^ class typeName <= anotherType liveClass typeName
+		]
+		ifFalse: [
+			^ (anotherType isKindOf: UnionType)
+		]! !
+
+!ClassLiveType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 13:48:21'!
+liveClass
+	^ class! !
+
+!FixedType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 13:48:21'!
+= otherObject
+
+	otherObject ifNotNil: [ 
+		(otherObject isKindOf: FixedType) ifTrue: [
+				^ class = otherObject liveClass
+			]
+		 ].
+	
+	^ false.! !
+
+!FixedType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:07:20'!
+accept: visitor
+	^ visitor visitFixedType: self.! !
+
+!FixedType methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/11/2020 20:36:55'!
+hash
+	^ class hash! !
+
+!FixedType methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/5/2020 19:40:38'!
+initializeWith: aClass
+
+	class := aClass.! !
+
+!FixedType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 14:15:53'!
+supertypeWith: types 
+	
+	|copiedTypes typesToProcess|
+	
+	typesToProcess := self sanitize: types.
+
+	copiedTypes := Set new.
+	typesToProcess do: [:t | 
+		(t isKindOf: GenericType) ifTrue: [^ FixedType for: Object].
+		((t isKindOf: EmptyType) or: [t isKindOf: UnionType]) ifTrue: [^ UnionType of: self and: typesToProcess].
+		copiedTypes add: t liveClass. 
+	].
+	
+	copiedTypes add: class.
+
+	^ FixedType for: (SupertypeDetective new: copiedTypes) search! !
+
+!FixedType class methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/5/2020 19:40:16'!
+for: aClass 
+	^ self new initializeWith: aClass.! !
+
+!GenericType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 13:48:21'!
+= otherObject
+
+	otherObject ifNotNil: [ 
+		(otherObject isKindOf: GenericType) ifTrue: [
+				^ class = otherObject liveClass and: [innerTypes = otherObject generics].
+			]
+		 ].
+	
+	^ false.! !
+
+!GenericType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:07:29'!
+accept: visitor
+	^ visitor visitGenericType: self.! !
+
+!GenericType methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/11/2020 19:59:36'!
+generics
+	^ innerTypes.! !
+
+!GenericType methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/11/2020 20:43:56'!
+hash
+	^ class hash + innerTypes hash! !
+
+!GenericType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 13:37:08'!
+initializeWith: aClass withTypes: aTypesCollection 
+	|typesToProcess|
+
+	typesToProcess := self sanitize: aTypesCollection.
+	class := aClass.
+	innerTypes := Set new.
+	
+	typesToProcess do: [:type | 
+		(type isKindOf: LiveType) ifTrue: [
+				innerTypes add: type.
+			] ifFalse: [
+				innerTypes add: (FixedType for: type)
+			]
+		].
+	^ self.! !
+
+!GenericType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 14:19:45'!
+supertypeWith: types 
+	| supertype superGenerics copiedTypes generics typesToProcess|
+
+	copiedTypes := Set new.
+	generics := Set new.
+	typesToProcess := self sanitize: types.
+	
+	typesToProcess do: [:t | 
+		(t isKindOf: FixedType) ifTrue: [^ FixedType for: Object].
+		((t isKindOf: EmptyType) or: [t isKindOf: UnionType]) ifTrue: [^ UnionType of: self and: typesToProcess].
+		copiedTypes add: t liveClass.
+		generics addAll: t generics.
+	].
+	
+	copiedTypes add: class.
+	generics addAll: innerTypes.
+
+	supertype := (SupertypeDetective new: copiedTypes) search.
+	superGenerics := generics anyOne supertypeWith: generics.
+
+	^ GenericType for: supertype withTypes: (Array with: superGenerics)! !
+
+!GenericType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 19:06:11'!
+unifiesWith: anotherType
+	^ (anotherType isKindOf: GenericType) and: [class = anotherType liveClass]! !
+
+!GenericType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:14:10'!
+unify: anotherType
+	| unifiedTypes |
+	unifiedTypes := innerTypes copy.
+	unifiedTypes addAll: anotherType generics.
+	^ GenericType for: class withTypes: unifiedTypes.! !
+
+!GenericType class methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/11/2020 19:54:59'!
+for: aClass withTypes: aTypesCollection 
+ 	^ self new initializeWith: aClass withTypes: aTypesCollection! !
+
+!EmptyType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/18/2020 22:49:30'!
+<= anotherType
+	^ true.! !
+
+!EmptyType methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/12/2020 19:45:16'!
+= otherObject
+
+	otherObject ifNotNil: [ 
+		^ otherObject isKindOf: EmptyType.
+	].
+	
+	^ false.! !
+
+!EmptyType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:06:46'!
+accept: visitor
+	^ visitor visitEmptyType: self.! !
+
+!EmptyType methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/12/2020 19:46:00'!
+hash
+	^ #EmptyType hash! !
+
+!EmptyType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 13:58:03'!
+supertypeWith: types 
+	
+	|typesToProcess|
+	
+	typesToProcess := self sanitize: types.
+
+	typesToProcess do: [:t | 
+		(t isKindOf: EmptyType) ifFalse: [^ UnionType of: self and: typesToProcess].
+	].
+
+	^ self.! !
+
+!UnionType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/18/2020 22:50:06'!
+<= anotherType
+	^ false.! !
+
+!UnionType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 13:44:51'!
+= otherObject
+
+	otherObject ifNotNil: [ 
+		(otherObject isKindOf: UnionType) ifTrue: [
+				^ types = otherObject types
+			]
+		 ].
+	
+	^ false.! !
+
+!UnionType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:07:52'!
+accept: visitor
+	^ visitor visitUnionType: self.! !
+
+!UnionType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 13:45:51'!
+hash
+	^ types hash! !
+
+!UnionType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 14:18:47'!
+initializeWith: aType and: anotherType
+
+	|anotherTypes|
+	
+	anotherTypes := self sanitize: anotherType.
+	
+	types := Set new.
+	types add: aType.
+	anotherTypes do: [ :type | 
+		(type isKindOf: UnionType) 
+			ifTrue: [ types addAll: type types]
+			ifFalse: [ types add: type ].
+		].
+	^ self.! !
+
+!UnionType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 14:13:49'!
+supertypeWith: liveTypes 
+	
+	|typesToProcess|
+	
+	typesToProcess := self sanitize: liveTypes.
+	types addAll: typesToProcess.
+
+	^ self.! !
+
+!UnionType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 13:45:30'!
+types
+
+	^ types copy.! !
+
+!UnionType class methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 13:36:06'!
+of: aType and: anotherType 
+	^ self new initializeWith: aType and: anotherType.! !
+
+!LiveTypesPrinter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 16:59:16'!
+initializeWith: aStream
+	stream := aStream.
+	^ self.! !
+
+!LiveTypesPrinter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/18/2020 22:21:01'!
+print: typesTree
+	self print: typesTree withDelimiter: true.! !
+
+!LiveTypesPrinter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/9/2020 19:35:31'!
+print: liveTypes upTo: aNumberOfTypes
+
+	| typesTree |
+	
+	typesTree := TypeNode for: liveTypes.
+	
+	self print: typesTree.
+	
+! !
+
+!LiveTypesPrinter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/10/2020 09:58:10'!
+print: typesTree withDelimiter: printDelimiter
+	| treeBound treeGenerics |
+	
+	printDelimiter ifTrue: [
+		stream nextPut: $<.
+	].
+	typesTree type accept: self.
+	treeBound := typesTree bound.
+	"TODO: Avoid nil checks"
+	treeBound
+		 ifNotNil: [
+			self print: treeBound.
+		].
+	"TODO: Create an actual clear message for sorting"
+	treeGenerics := typesTree generics asArray sort: [:typeTree1 :typeTree2 | typeTree1 type <= typeTree2 type].
+	treeGenerics ifNotEmpty: [
+			stream nextPutAll: ' # '.
+		].
+	treeGenerics do: [:generic | self print: generic withDelimiter: false] separatedBy: [stream nextPutAll: ' | '].
+		printDelimiter ifTrue: [
+		stream nextPut: $>.
+	].! !
+
+!LiveTypesPrinter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:10:02'!
+visitEmptyType: anEmptyType
+	stream nextPut: $?! !
+
+!LiveTypesPrinter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/18/2020 22:56:43'!
+visitFixedType: aFixedType
+	|class|
+	"TODO: Consider instead actually printing UnionTypes as any instead of forcing UnionType supertypes into Object at the node level. Maybe even consider wheter the supertype of all mixed types should be a Union".
+	class := aFixedType liveClass.
+	(class = Object) 
+		ifTrue: [
+			stream nextPutAll: 'any'
+		] 
+		ifFalse: [
+			stream nextPutAll: class typeName
+		].! !
+
+!LiveTypesPrinter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:13:04'!
+visitGenericType: aGenericType
+	stream nextPutAll: aGenericType liveClass typeName.
+	"TODO: make upTo an instance variable"
+	(LiveTypesPrinter on: stream) print: aGenericType generics upTo: 5.! !
+
+!LiveTypesPrinter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 21:06:52'!
+visitUnionType: aUnionType
+	"TODO upTo should be an instance variable"
+	self print: aUnionType types upTo: 5! !
+
+!LiveTypesPrinter class methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 16:58:37'!
+on: aStream
+	^ self new initializeWith: aStream.! !
+
+!RawToLiveTypesAdapter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:32:19'!
+adapt: aRawTypes
+	| liveTypes |
+	aRawTypes ifEmpty: [^ Set with: (self create: nil) ].
+	liveTypes := Set new.
+	
+	aRawTypes do: [:rt | 
+			rt ifNotNil: [ 
+				| newLiveType |
+				newLiveType := self create: rt. 
+				self unifyOrAdd: newLiveType into: liveTypes.
+			]
+		].
+	^ liveTypes.! !
+
+!RawToLiveTypesAdapter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:03:42'!
+create: aRawType 
+	aRawType ifNil: [^ EmptyType new].
+	(aRawType isKindOf: CollectionsContentType) ifTrue: [
+			| innerTypes |
+			innerTypes := aRawType contentTypes copy.
+			"innerTypes ifEmpty: [
+				innerTypes add: EmptyType new.
+			]. "
+			^ GenericType for: aRawType type withTypes: (self adapt: innerTypes).
+		].
+	^ FixedType for: aRawType! !
+
+!RawToLiveTypesAdapter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 19:15:24'!
+unifyOrAdd: newLiveType into: liveTypes
+	liveTypes 
+		detect: [:type | type unifiesWith: newLiveType] 
+		ifFound: [:type | 
+			liveTypes remove: type.
+			liveTypes add: (type unify: newLiveType) ] 
+		ifNone: [liveTypes add: newLiveType.].
+! !
+
+!SupertypeDetective methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/2/2020 18:57:10'!
+allSupertypesOf: types
+	
+	"TODO remove this!! ALF & MDS"
+	^ types 
+		inject: types anyOne withAllSuperclasses 
+		into: [ :temporaryCommonSupertypes :type | temporaryCommonSupertypes intersection: type withAllSuperclasses ].
+! !
+
+!SupertypeDetective methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/2/2020 18:57:26'!
+commonLowestTypeIn: commonSupertypes
+	
+	"TODO remove this!! ALF & MDS"
+	| commonSupertype commonSupertypeSuperclassesSize |
+	
+	commonSupertypeSuperclassesSize := 0.
+	
+	commonSupertypes do: [ :currentType | | currentTypeSuperclassesSize |
+		currentTypeSuperclassesSize := currentType withAllSuperclasses size.
+		currentTypeSuperclassesSize > commonSupertypeSuperclassesSize ifTrue: [
+			commonSupertypeSuperclassesSize := currentTypeSuperclassesSize.
+			commonSupertype := currentType ]].
+	
+	^ commonSupertype! !
+
+!SupertypeDetective methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/2/2020 19:04:07'!
+commonSupertypeIfNoTypes: aBlock
+
+	"TODO remove this!! ALF & MDS"
+	| types commonSupertypes commonSupertype |
+	
+	types := searchingTypes.
+	types := types reject: [ :aType | aType = UndefinedObject ].
+	types isEmpty ifTrue: [ ^aBlock value ].
+	types size = 1 ifTrue: [ ^types anyOne ].
+	
+	"I have to convert types to Array becuase inst var types can be a Set - Hernan"
+	commonSupertypes := self allSupertypesOf: types.
+	commonSupertype := self commonLowestTypeIn: commonSupertypes.
+	
+	^commonSupertype ! !
+
+!SupertypeDetective methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/2/2020 19:01:17'!
+initializeWith: types
+
+	searchingTypes := types.! !
+
+!SupertypeDetective methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/2/2020 18:59:51'!
+search
+
+	^self commonSupertypeIfNoTypes: [ ProtoObject ]! !
+
+!SupertypeDetective class methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/2/2020 19:02:27'!
+new: types
+
+	^ self new initializeWith: types.! !
+
+!TypeNode methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:24:45'!
+= otherObject
+
+	otherObject ifNotNil: [ 
+		(otherObject isKindOf: TypeNode) ifTrue: [
+				^ (bound = otherObject bound) 
+					and: [generics = otherObject generics ]
+					and: [type = otherObject type]
+			]
+		 ].
+	
+	^ false.! !
+
+!TypeNode methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:18:55'!
+bound
+	^ bound! !
+
+!TypeNode methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:19:05'!
+generics
+	^ generics! !
+
+!TypeNode methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:26:40'!
+hash
+	^ type hash * generics hash * bound hash! !
+
+!TypeNode methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/18/2020 22:01:51'!
+initializeWith: aTypeSet 
+	| typesToProcess supertype |
+	
+	typesToProcess := self sanitize: aTypeSet.
+	supertype := typesToProcess anyOne supertypeWith: typesToProcess.
+	
+	(supertype isKindOf: GenericType) 
+		ifTrue: [ 
+			| processTypesGenerics |
+			processTypesGenerics := Set new.
+			typesToProcess do: [:aType | processTypesGenerics addAll: aType generics].
+			bound := TypeNode for: processTypesGenerics. 
+			type := FixedType for: supertype liveClass 
+		] 
+		ifFalse: [
+			(supertype isKindOf: UnionType)
+				ifTrue: [
+					type := FixedType for: Object.
+				]
+				ifFalse: [
+					type := supertype.
+				]
+		].
+	
+	(typesToProcess size > 1) 
+		ifTrue: [
+			generics := typesToProcess collect: [:aType | TypeNode for: aType].
+		]
+		ifFalse: [
+			generics := Set new.
+		]! !
+
+!TypeNode methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:32:47'!
+sanitize: types
+	| sanitizedTypes |
+	
+	sanitizedTypes := types.
+	(types isKindOf: Collection) ifFalse: [
+			sanitizedTypes := Set with: types.
+		].
+	
+	^ sanitizedTypes! !
+
+!TypeNode methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:19:23'!
+type
+	^ type.! !
+
+!TypeNode class methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:14:30'!
+for: aTypeSet
+	^ self new initializeWith: aTypeSet.! !
 
 !TypedArray methodsFor: 'as yet unclassified' stamp: 'alf & mds 9/29/2019 18:11:51'!
 at: anIndex
 
 	^ innerArray at: anIndex.! !
 
-!TypedArray methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/22/2019 21:53:37'!
+!TypedArray methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 17:57:28'!
 at: anIndex put: aValue
 
-	|innerReturn|
+	|innerReturn valueClass specialObjectsArray liveCollections classIndex isLiveCollection |
 	innerReturn := innerArray at: anIndex put: aValue.
 	"TODO: if the value is an instance of SupportedTypes we should... WTF"
-	types add: aValue class.
+	valueClass := aValue class.
+	specialObjectsArray := Smalltalk specialObjectsArray.
+	liveCollections := specialObjectsArray at: 66.
+	classIndex := 0.
+	isLiveCollection := liveCollections anySatisfy: [ :class |
+		classIndex := classIndex + 1.
+		class = valueClass
+	].
+	isLiveCollection
+		ifTrue: [
+			| typedArray |
+			typedArray := aValue instVarAt: ((specialObjectsArray at: 67) at: classIndex) + 1.
+			types add: typedArray contentTypes.
+		] 
+		ifFalse: [
+			types add: valueClass.
+		]. 
 	^innerReturn.
 	! !
 
