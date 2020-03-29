@@ -1,3 +1,11 @@
+# Sunday March 29
+
+## Update
+
+* Analyzed auto completion based on expression "aCollection first " which considering our project should take into account the item types in "aCollection" and suggest selectors based on those types. Today's code looks into the return type of "first" as a method of types in "aCollection", but this return type is not contextualized: for a regular collection used extensively it will probably be Object, as "first" will have return a wide variety of values (not to mention only the first 10 returns will be considered). The problem here is that while we do have the contents type available it's hard to decide when to use them: they do apply to "first" but they wouldn't apply to "size". We thought about using them when the return type is Object but it would be merely an heuristic (Object might be the correct type or we could be getting a more concrete type just because the first 10 executions of the method where on the same or few instances). 
+* If we consider our idea for a general solution to the generics issue, where users would indicate a class to feature generics and the method where we should collect types, then an option would be to also indicate methods where the return type is generic. Then we would know when to use the regular return type data or the content type data. This is equivalent to users featuring a generic type declared for a class as a parameter or return type of a method in statically typed languages. The difference is that, once instrumented, with live typing you wouldn't then have to bind the generic type when making use of such objects, it would be done for you via the type collection.
+* We are evaluating whether or not such instrumentation is the only way to make this work or we are missing something.
+
 # Sunday March 15
 
 ## Update
