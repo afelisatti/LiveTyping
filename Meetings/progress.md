@@ -1,3 +1,16 @@
+# Sunday April 12
+
+## Update
+
+* We continued reviewing auto completion scenarios. For unary messages we could code in the heuristic but it wouldn't be right, particularly because since methods in the Collection hierarchy are often defined "high up" there's a lot of chance of false positives. 
+* We created a test class to validate the autocompletion behavior which is not affected by all our test clean up code. We confirmed the CCT is available for unary messages at the MessageNode.
+* The lack of contextualization for methods is troubling. It may be an even bigger problem than just for this collections.
+
+
+## Questions
+
+* What's the purpose of TypeCastApplier? We need an explanation of the entire auto completion model.
+
 # Sunday March 29
 
 ## Update
