@@ -1,3 +1,22 @@
+# Sunday May 3
+
+The world is a dark place. Entire cities have frozen still to combat a tiny invisible enemy. Major economies around the world are on the verge of collapse. Depression and despair abound. But one thing remains sacred. Our unwavering determination to NOT work and instead fill our minds with short lived sprouts of dopamine. In the midst of this absurd circumstances, we have found the will to concentrate for a few minutes. I shall now recite our findings for future generations of nerds...
+
+## Update
+
+* Discussed a shower thought to detect parameterized methods in generic classes. We could mark a method as potentially parametric when calculating it's return type, if its type array is full and results in Object. This heuristic is based on the fact that single typed methods will never fill their type array and the ones that return Object for real will probably be limited to a few classes. To make the heuristic more valuable, we could promt users to determine whether the method is parametric or not.
+* We analysed the DynamicType hierarchy and uses. It seems that we could add there a ParameterizedType which we would use in the selected methods of generic classes by overriding the `createMethodReturnTypeInfoOf:` method. For TypedArrayCollection, for example, we would check if the method is `#anyOne` and then return a ParameterizedType. Then, in the `typesIn: aCompiledMethod addingIncompleteTypeInfoTo: incompleteTypeInfoReasons castingWith: aTypeCastApplier` method from `MessageNode` we will receive the ParameterizedType and use the context information from the node to get the generic data. This solution would work well with the general approach we discussed as we would mark all methods in class declared as generic and store a list of parameterized methods for each one.
+
+## Next Steps
+
+* Create a test that allows validating the behaviour described. We will need to research the autocompletion tests available and how to work from there.
+
+# Tuesday April 14
+
+## Answers
+
+* We indeed need to annotate somehow, ideally automatically, that generics are returned in a method. We could either make use of the DynamicType infrastructure or modify the returnTypes of the method.
+
 # Sunday April 12
 
 ## Update
