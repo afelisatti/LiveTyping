@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #3851] on 15 March 2020 at 10:57:08 pm'!
+'From Cuis 5.0 [latest update: #3851] on 18 May 2020 at 8:42:03 pm'!
 'Description Type checking improvements and support for x ifNotNil: [ ^... ] and the like'!
-!provides: 'LiveTyping' 1 42!
+!provides: 'LiveTyping' 1 43!
 !requires: '__LiveTyping-TestData__' 1 0 nil!
 !requires: 'BaseImageTests' 1 127 nil!
 SystemOrganization addCategory: #LiveTyping!
@@ -6421,7 +6421,7 @@ withMethodNodeOf: aSourceCode do: doBlock ifError: anErrorBlock
 		
 	! !
 
-!LiveTypingSmalltalkCompleter methodsFor: 'return type' stamp: 'HAW 4/4/2019 08:02:59'!
+!LiveTypingSmalltalkCompleter methodsFor: 'return type' stamp: 'alf & mdsb 5/18/2020 20:40:46'!
 commonSupertypeOrSelectorsOf: aNodeUnderCursor in: aMethodNode  
 	
 	| methodToAnalyze types methodClass |
@@ -13731,11 +13731,11 @@ typesIn: aCompiledMethod addingIncompleteTypeInfoTo: incompleteTypeInfoReasons
 	
 	^self typesIn: aCompiledMethod addingIncompleteTypeInfoTo: incompleteTypeInfoReasons castingWith: NoTypeCastApplier new! !
 
-!MessageNode methodsFor: '*LiveTyping' stamp: 'HAW 8/21/2019 22:29:58'!
+!MessageNode methodsFor: '*LiveTyping' stamp: 'alf & mdsb 5/18/2020 20:39:58'!
 typesIn: aCompiledMethod addingIncompleteTypeInfoTo: incompleteTypeInfoReasons castingWith: aTypeCastApplier 
 	
 	| types sentSelector receiverTypes  |
-
+	
 	sentSelector := self selectorSymbol.
 	receiverTypes := aTypeCastApplier receiverTypesFor: self in: aCompiledMethod addingIncompleteTypeInfoTo:  incompleteTypeInfoReasons.
 	

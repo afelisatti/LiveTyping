@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #3851] on 15 March 2020 at 10:56:38 pm'!
+'From Cuis 5.0 [latest update: #3851] on 18 May 2020 at 8:43:09 pm'!
 'Description Please enter a description for this package'!
-!provides: 'CollectionLiveTyping' 1 4!
+!provides: 'CollectionLiveTyping' 1 5!
 SystemOrganization addCategory: #'CollectionLiveTyping-Tests'!
 SystemOrganization addCategory: #CollectionLiveTyping!
 
@@ -95,6 +95,16 @@ CollectionLiveTypingTest subclass: #TypeNodeTests
 TypeNodeTests class
 	instanceVariableNames: ''!
 
+!classDefinition: #TestObjectTest category: #'CollectionLiveTyping-Tests'!
+TestCase subclass: #TestObjectTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping-Tests'!
+!classDefinition: 'TestObjectTest class' category: #'CollectionLiveTyping-Tests'!
+TestObjectTest class
+	instanceVariableNames: ''!
+
 !classDefinition: #ATestClassForCollections category: #'CollectionLiveTyping-Tests'!
 Object subclass: #ATestClassForCollections
 	instanceVariableNames: 'instanceVariable'
@@ -123,6 +133,16 @@ Object subclass: #HaltingClass
 	category: 'CollectionLiveTyping-Tests'!
 !classDefinition: 'HaltingClass class' category: #'CollectionLiveTyping-Tests'!
 HaltingClass class
+	instanceVariableNames: ''!
+
+!classDefinition: #TestObject category: #'CollectionLiveTyping-Tests'!
+Object subclass: #TestObject
+	instanceVariableNames: 'innerCollection'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping-Tests'!
+!classDefinition: 'TestObject class' category: #'CollectionLiveTyping-Tests'!
+TestObject class
 	instanceVariableNames: ''!
 
 !classDefinition: #CollectionsContentType category: #CollectionLiveTyping!
@@ -763,6 +783,26 @@ returnRawTypes := (self class methodDictionary at: #returnCollection) returnRawT
 contentTypes := returnRawTypes at: 1.
 self assert: (contentTypes containsType: String).
 self assert: (contentTypes containsType: SmallInteger).! !
+
+!LiveTypingCollectionTests methodsFor: 'as yet unclassified' stamp: 'ALF & MDSB 4/12/2020 17:20:23'!
+testxxxAutocompletionAttempts
+ |aCollection anotherCollection aTestClass instanceVariableRawTypes |
+
+aCollection := TypedArrayCollection new.
+aCollection add: 'pepe'.
+anotherCollection := TypedArrayCollection new.
+aTestClass := ATestClassForCollections new.
+
+aTestClass store: aCollection.
+aTestClass store: anotherCollection.
+
+instanceVariableRawTypes := ATestClassForCollections instanceVariablesRawTypes at: 1.
+
+self assert: aCollection contentTypes equals: (instanceVariableRawTypes at: 1).  
+self assert: anotherCollection contentTypes equals: (instanceVariableRawTypes at: 2). 
+
+
+! !
 
 !LiveTypingCollectionTests methodsFor: 'typed-array' stamp: 'alf & mds 9/29/2019 21:01:15'!
 stringsTypedArray
@@ -1790,6 +1830,13 @@ test010EmptyAndFixed
 	self assert: nil equals: typeTree bound.
 	self assert: (Set with: intNode with: emptyNode) equals: typeTree generics! !
 
+!TestObjectTest methodsFor: 'as yet unclassified' stamp: 'ALF & MDSB 4/12/2020 18:31:13'!
+test001
+	|aVar|
+	aVar := TestObject with: 34.
+	aVar add: 42.
+	self assert: aVar doSomething equals: 34 hash.! !
+
 !ATestClassForCollections methodsFor: 'as yet unclassified' stamp: 'ALF - MDS 10/20/2019 17:33:22'!
 rawTypes
 
@@ -1823,6 +1870,25 @@ retrieve
 store: aCollection
 
 	instanceVariable := aCollection.! !
+
+!TestObject methodsFor: 'as yet unclassified' stamp: 'ALF & MDSB 4/12/2020 18:20:11'!
+add: anObject
+	^ innerCollection add: anObject! !
+
+!TestObject methodsFor: 'as yet unclassified' stamp: 'ALF & MDSB 4/12/2020 18:29:07'!
+doSomething
+	|value|
+  	 value := innerCollection first.
+	^ value hash.! !
+
+!TestObject methodsFor: 'as yet unclassified' stamp: 'ALF & MDSB 4/12/2020 18:11:25'!
+initializeWith: anObject
+	innerCollection := TypedArrayCollection with: anObject.
+	^self.! !
+
+!TestObject class methodsFor: 'as yet unclassified' stamp: 'ALF & MDSB 4/12/2020 18:10:24'!
+with: anObject
+	^ self new initializeWith: anObject! !
 
 !CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/22/2019 22:15:11'!
 add: aClass 
@@ -2247,15 +2313,12 @@ adapt: aRawTypes
 		].
 	^ liveTypes.! !
 
-!RawToLiveTypesAdapter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:03:42'!
+!RawToLiveTypesAdapter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/17/2020 13:55:43'!
 create: aRawType 
 	aRawType ifNil: [^ EmptyType new].
 	(aRawType isKindOf: CollectionsContentType) ifTrue: [
 			| innerTypes |
 			innerTypes := aRawType contentTypes copy.
-			"innerTypes ifEmpty: [
-				innerTypes add: EmptyType new.
-			]. "
 			^ GenericType for: aRawType type withTypes: (self adapt: innerTypes).
 		].
 	^ FixedType for: aRawType! !
@@ -2409,12 +2472,11 @@ at: anIndex
 
 	^ innerArray at: anIndex.! !
 
-!TypedArray methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 17:57:28'!
+!TypedArray methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/17/2020 13:53:42'!
 at: anIndex put: aValue
 
 	|innerReturn valueClass specialObjectsArray liveCollections classIndex isLiveCollection |
 	innerReturn := innerArray at: anIndex put: aValue.
-	"TODO: if the value is an instance of SupportedTypes we should... WTF"
 	valueClass := aValue class.
 	specialObjectsArray := Smalltalk specialObjectsArray.
 	liveCollections := specialObjectsArray at: 66.
