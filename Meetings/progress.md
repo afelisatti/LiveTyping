@@ -1,3 +1,137 @@
+# Monday June 15
+
+* Fixed remaining tests after updating to latest LiveTyping version.
+* Reviewed autocompleter tests to understand framework.
+* Created initial autocompleter tests for typed collections and debugged its failures.
+
+TODO:
+* Improve installer with all methods changed outside of livetyping so they are modified accordingly.
+* Improve our tests to not rely on existing instance variables.
+
+
+# Sunday May 31
+
+* Trying to fix the tests, found so far
+
+** OrderedCollection#makeRoomAtFirst was changed in the other image, moving the Array recreation to a self createArray: size message, in order to override it in the TypedArrayCollection. TODO: This has to be included in the installer.
+** with:, with:with and with:...:with are dirty with dirty stuff on the returnRawTypes. NOTE: Creation methods should not generate aliasing, otherwise, everything is linked with eachother.
+
+TODO:
+- Add unit tests over the methods we changed outside of livetyping.
+
+
+aMessage '<TypedArrayCollection<any # SmallInteger | TypedArrayCollection<SmallInteger> | TypedArrayCollection2<String>>>'
+tooltip  '<TypedArrayCollection<any # SmallInteger | TypedArrayCollection<any # SmallInteger | String> | TypedArrayCollection2<String>>>'
+# Monday May 18
+
+We've reviewed the LiveTyping package diff. It's mostly refactors and the only changes are related to our TypeInfo hierarchy and printing logic move:
+
+``` 
+    !TypeInfo methodsFor: 'as yet unclassified' stamp: 'alf & mds 1/12/2020 22:02:51'!  
+    printReducedTypesOn: aStream    
+        
+        aStream nextPut: $<.    
+            
+        self isTypesEmpty   
+            ifTrue: [ aStream nextPut: $? ] 
+            ifFalse: [  
+                self    
+                    withCommonSupertypeDo: [ :aCommonSupertype |    
+                        aStream nextPutAll: aCommonSupertype typeName.  
+                        self typesSize > 1 ifTrue: [ aStream nextPutAll: ' # ... ' ]]   
+                    ifGeneric: [ :genericType |     
+                        aStream nextPutAll: 'any # '.   
+                        self    
+                            typesDo: [:aType | aStream nextPutAll: aType typeName ] 
+                            separatedBy: [ aStream nextPutAll: ' | ' ]]].   
+                    
+        aStream nextPut: $>.    
+    ! ! 
+        
+    !TypeInfo methodsFor: 'printing' stamp: 'alf & mds 1/12/2020 22:03:14'! 
+    printTypes  
+            
+        ^String streamContents: [ :stream | self printTypesOn: stream ]! !  
+        
+    !TypeInfo methodsFor: 'printing' stamp: 'alf and mtqp 2/16/2020 17:00:36'!  
+    printTypesOn: aStream upTo: aNumberOfTypes  
+        
+        | liveTypes |   
+            
+        liveTypes := RawToLiveTypesAdapter new adapt: self types.   
+        (LiveTypesPrinter on: aStream) print: liveTypes upTo: aNumberOfTypes.   
+        
+        ! ! 
+        
+    !TypeInfo methodsFor: 'printing' stamp: 'alf & mds 2/2/2020 18:34:52'!
+```
+
+```
+    !VariableTypeInfo methodsFor: 'common supertype' stamp: 'alf & mds 2/2/2020 18:55:31'!  
+    allSupertypesOf: types  
+            
+        "TODO remove this!! ALF & MDS"  
+        ^ types     
+            inject: types anyOne withAllSuperclasses    
+            into: [ :temporaryCommonSupertypes :type | temporaryCommonSupertypes intersection: type withAllSuperclasses ].  
+    ! ! 
+        
+    !VariableTypeInfo methodsFor: 'common supertype' stamp: 'alf & mds 2/2/2020 18:55:17'!  
+    commonSupertype 
+            
+        "TODO remove this!! ALF & MDS"  
+        ^self commonSupertypeIfNoTypes: [ ProtoObject ]! !  
+        
+    !VariableTypeInfo methodsFor: 'common supertype' stamp: 'HAW 12/3/2018 12:55:49'!   
+    commonSupertypeIfGeneric: genericBlock  
+            
+        ^self withCommonSupertypeDo: [ :aCommonSupertype | aCommonSupertype ] ifGeneric: genericBlock! !    
+        
+    !VariableTypeInfo methodsFor: 'common supertype' stamp: 'alf & mds 2/2/2020 18:55:23'!  
+    commonSupertypeIfNoTypes: aBlock    
+        
+        "TODO remove this!! ALF & MDS"
+        ```
+
+```
+    !VariableTypeInfo methodsFor: 'common supertype' stamp: 'alf & mds 2/2/2020 19:02:04'!  
+    withCommonSupertypeDo: doBlock ifGeneric: ifGenericBlock    
+        
+        "TODO remove this!! ALF & MDS"  
+        | commonSupertype block  |  
+            
+        commonSupertype := (SupertypeDetective new: self types) search. 
+        block := (commonSupertype = Object or: [ commonSupertype = ProtoObject ])   
+            ifTrue: [ ifGenericBlock ]  
+            ifFalse: [ doBlock  ].  
+                
+        ^block value: commonSupertype ! !   
+        
+    !VariableTypeInfo methodsFor: 'common supertype - private' stamp: 'alf & mds 2/2/2020 18:55:48'!    
+    commonLowestTypeIn: commonSupertypes    
+            
+        "TODO remove this!! ALF & MDS"  
+```
+
+```
+    !ClassDescription methodsFor: '*LiveTyping-private' stamp: 'alf & mtqp 12/8/2019 20:41:20'! 
+    createMethodReturnRawTypesOf: aMethod   
+        |liveTypingCollections| 
+                    
+        aMethod isQuickReturnSelf ifTrue: [ ^nil ]. 
+        aMethod isReturnSpecial ifTrue: [ ^nil ].   
+            
+        liveTypingCollections := (Smalltalk specialObjectsArray at: 66).    
+        (liveTypingCollections includes: aMethod methodClass theNonMetaClass) ifTrue: [^ nil].  
+        aMethod methodClass theNonMetaClass = Collection ifTrue: [  
+            ^nil    
+            ].  
+            
+        ^self createRawTypesOfSize: (self methodReturnRawTypesSizeOf: aMethod) ! !
+```
+
+* Borrar halt en Behavior #initializeMethodsTypeInformation y #createMethodReturnRawTypesOf
+
 # Sunday May 3
 
 The world is a dark place. Entire cities have frozen still to combat a tiny invisible enemy. Major economies around the world are on the verge of collapse. Depression and despair abound. But one thing remains sacred. Our unwavering determination to NOT work and instead fill our minds with short lived sprouts of dopamine. In the midst of this absurd circumstances, we have found the will to concentrate for a few minutes. I shall now recite our findings for future generations of nerds...
