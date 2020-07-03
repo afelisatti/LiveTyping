@@ -1,3 +1,11 @@
+# Thursday July 2
+
+* Completed a proof of concept implementation for unary method autocompletion, making all tests pass. Essentially, we created a new kind of `DynamicType` which represents a parametric type that can only be instantiated considering the generic type in context. 
+
+TODO:
+* Add tests for other kind of methods.
+* Refactor POC into a general solution.
+
 # Monday June 15
 
 * Fixed remaining tests after updating to latest LiveTyping version.
