@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #3851] on 18 May 2020 at 8:43:09 pm'!
+'From Cuis 5.0 [latest update: #4137] on 17 August 2020 at 6:48:30 pm'!
 'Description Please enter a description for this package'!
-!provides: 'CollectionLiveTyping' 1 5!
+!provides: 'CollectionLiveTyping' 1 6!
 SystemOrganization addCategory: #'CollectionLiveTyping-Tests'!
 SystemOrganization addCategory: #CollectionLiveTyping!
 
@@ -33,6 +33,16 @@ OrderedCollection subclass: #CollectionLiveTyping
 	category: 'CollectionLiveTyping'!
 !classDefinition: 'CollectionLiveTyping class' category: #CollectionLiveTyping!
 CollectionLiveTyping class
+	instanceVariableNames: ''!
+
+!classDefinition: #CollectionLiveTypingCompleterTest category: #'CollectionLiveTyping-Tests'!
+LiveTypingSmalltalkCompleterTest subclass: #CollectionLiveTypingCompleterTest
+	instanceVariableNames: 'collectionVariable'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping-Tests'!
+!classDefinition: 'CollectionLiveTypingCompleterTest class' category: #'CollectionLiveTyping-Tests'!
+CollectionLiveTypingCompleterTest class
 	instanceVariableNames: ''!
 
 !classDefinition: #CollectionLiveTypingTest category: #'CollectionLiveTyping-Tests'!
@@ -103,6 +113,16 @@ TestCase subclass: #TestObjectTest
 	category: 'CollectionLiveTyping-Tests'!
 !classDefinition: 'TestObjectTest class' category: #'CollectionLiveTyping-Tests'!
 TestObjectTest class
+	instanceVariableNames: ''!
+
+!classDefinition: #ParameterizedType category: #CollectionLiveTyping!
+DynamicType subclass: #ParameterizedType
+	instanceVariableNames: 'types'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CollectionLiveTyping'!
+!classDefinition: 'ParameterizedType class' category: #CollectionLiveTyping!
+ParameterizedType class
 	instanceVariableNames: ''!
 
 !classDefinition: #ATestClassForCollections category: #'CollectionLiveTyping-Tests'!
@@ -274,16 +294,43 @@ createMethodReturnRawTypesOf: aMethod
 
 	^super createMethodReturnRawTypesOf: aMethod ! !
 
-!TypedArrayCollection class methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/8/2019 17:13:15'!
+!TypedArrayCollection class methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/2/2020 20:39:42'!
 createMethodReturnTypeInfoOf: aMethod
 
 	"(#(initialize) includes: aMethod selector) ifTrue: [ ^ ReturnTypeInfo of: aMethod are:`{TypedArrayCollection.}` ]."
+	aMethod selector == #first ifTrue: [ ^ ReturnTypeInfo of: aMethod are:`{ParameterizedType new.}` ].
 
 	^super createMethodReturnTypeInfoOf: aMethod ! !
+
+!ParameterizedType methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 17:22:10'!
+addTypesTo: collection from: aReceiverType
+	(aReceiverType isKindOf: CollectionsContentType)
+	 ifTrue: [
+		collection addAll: aReceiverType contentTypes
+		] 
+	ifFalse: [
+		collection addAll: types.
+		]
+	! !
+
+!ParameterizedType methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/2/2020 20:39:06'!
+asTypeFor: aCollectionContentTypeThatShouldBeAGenericType
+	
+	^aCollectionContentTypeThatShouldBeAGenericType contentTypes
+	! !
+
+!ParameterizedType methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/2/2020 20:10:10'!
+typeName
+	^'<T>'
+	! !
 
 !CollectionsContentType methodsFor: 'as yet unclassified' stamp: 'alf & mtqp 12/17/2019 09:49:01'!
 withAllSuperclasses
 	^Array with: collectionType.! !
+
+!CollectionsContentType methodsFor: 'accessing' stamp: 'alf & mds 2/2/2020 21:02:35'!
+type
+	^ collectionType.! !
 
 !FixedType methodsFor: 'private' stamp: 'alf and mtqp 2/16/2020 13:51:33'!
 printOn: aStream
@@ -300,6 +347,10 @@ printOn: aStream
 !TypeNode methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 20:08:57'!
 printOn: aStream
 	aStream nextPutAll: 'TypeNode ', type asString , '<', bound asString, '> # ' , generics asString ! !
+
+!TypeNode methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:19:23'!
+type
+	^ type.! !
 
 !TypedArrayCollection methodsFor: 'as yet unclassified' stamp: 'alf & mds 10/6/2019 20:12:02'!
 contentTypes
@@ -323,18 +374,20 @@ initialize
 
 	Utilities informUser: 'Initializing live typing' during: [ self initializeCollectionLiveTyping ].! !
 
-!CollectionLiveTyping class methodsFor: 'initialization' stamp: 'alf & mtqp 12/8/2019 17:36:04'!
+!CollectionLiveTyping class methodsFor: 'initialization' stamp: 'alf & mds 5/19/2020 20:55:12'!
 initializeCollectionLiveTyping
 |newArray count collectionsArray typedArrayIndexes|
 	
 	(Smalltalk specialObjectsArray size < 63) ifTrue: [
 		newArray := Array new: 67. 
 		
-		collectionsArray := Array new: 1.
+		collectionsArray := Array new: 2.
 		collectionsArray at: 1 put: TypedArrayCollection.
+		collectionsArray at: 2 put: TypedArrayCollection2.
 		
-		typedArrayIndexes := Array new: 1.
-		typedArrayIndexes at: 1 put: 1.
+		typedArrayIndexes := Array new: 2.
+		typedArrayIndexes at: 1 put: 0.
+		typedArrayIndexes at: 2 put: 0.
 		
 		count := 1.
 		
@@ -361,6 +414,144 @@ initializeCollectionLiveTyping
 			]
 		].! !
 
+!CollectionLiveTypingCompleterTest methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 18:44:22'!
+assertWhenBrowsing: sourceCode areSelectorsFrom: classes 
+	| aCompleter |
+
+	aCompleter := self autocompleteEntriesBrowsing: sourceCode.
+	
+	classes 
+		ifNil: [ self assert: aCompleter selectorsClasses isNil ]
+		ifNotNil: [ self assert: aCompleter selectorsClasses asSet = classes asSet ].! !
+
+!CollectionLiveTypingCompleterTest methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 18:29:32'!
+setUp
+	super setUp.
+	self browseClass: CollectionLiveTypingCompleterTest.
+	(self class typeInfoOfInstanceVariableNamed: 'collectionVariable') removeAllTypes.
+	(self class typeInfoOfInstanceVariableNamed: 'instanceVariable1') removeAllTypes.
+	(self class superclass typeInfoOfInstanceVariableNamed: 'instanceVariable1') removeAllTypes.
+	(self class superclass superclass typeInfoOfInstanceVariableNamed: 'instanceVariable1') removeAllTypes.
+	"(SequenceableCollection returnTypeInfoAt: #last) removeAllTypes.
+	(SequenceableCollection returnTypeInfoAt: #first) removeAllTypes."
+! !
+
+!CollectionLiveTypingCompleterTest methodsFor: 'as yet unclassified' stamp: 'alf & mds 6/23/2020 20:24:22'!
+tearDown
+	super tearDown.
+	self setUp! !
+
+!CollectionLiveTypingCompleterTest methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 18:54:29'!
+test001TypedArrayCollectionVariable
+	
+	collectionVariable := TypedArrayCollection with: '1'.
+	
+	self
+		assertEntriesWhenBrowsing: 'm1 collectionVariable '
+		areSelectorsOf: TypedArrayCollection.
+
+	self
+		assertEntriesWhenBrowsing: 'm1 1 < collectionVariable '
+		areUnaryAndBinarySelectorsOf: TypedArrayCollection.
+	! !
+
+!CollectionLiveTypingCompleterTest methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 18:55:03'!
+test002ParametricUnaryMessage
+	
+	collectionVariable := TypedArrayCollection with: 1.
+	
+	self
+		assertEntriesWhenBrowsing: 'm1 collectionVariable first '
+		areSelectorsOf: SmallInteger.
+
+	self
+		assertEntriesWhenBrowsing: 'm1 1 < collectionVariable first '
+		areUnaryAndBinarySelectorsOf: SmallInteger.
+	! !
+
+!CollectionLiveTypingCompleterTest methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 18:55:44'!
+test003TypedArrayCollectionVariableInSuperclass
+	
+	instanceVariable1 := TypedArrayCollection with: '1'.
+	
+	self
+		assertEntriesWhenBrowsing: 'm1 instanceVariable1 '
+		areSelectorsOf: TypedArrayCollection.
+
+	self
+		assertEntriesWhenBrowsing: 'm1 1 < instanceVariable1 '
+		areUnaryAndBinarySelectorsOf: TypedArrayCollection.
+	! !
+
+!CollectionLiveTypingCompleterTest methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 18:56:04'!
+test004NotSupportedUnaryMessage
+"Even when a method is not instrumented as parametric you get some autocompletion"
+	| expectedClasses |
+	
+	collectionVariable := TypedArrayCollection with: 'hello'.
+	expectedClasses := self typesOf: SequenceableCollection at: #last.
+	
+	self
+		assertWhenBrowsing: 'm1 collectionVariable last '
+		areSelectorsFrom: expectedClasses.
+	! !
+
+!CollectionLiveTypingCompleterTest methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 18:57:17'!
+test005ParametricUnaryOnNotCollectionLiveTyping
+"Even when a class is not instrumented as parametric you get some autocompletion"
+	| expectedClasses |
+	
+	collectionVariable := OrderedCollection with: 'hello'.
+	expectedClasses := self typesOf: SequenceableCollection at: #first.
+	
+	self
+		assertWhenBrowsing: 'm1 collectionVariable first '
+		areSelectorsFrom: expectedClasses.
+	! !
+
+!CollectionLiveTypingCompleterTest methodsFor: 'as yet unclassified' stamp: 'alf & mds 7/22/2020 10:26:01'!
+test006ParametricBinaryMessage
+	
+	"atLast: nth method return the nth element from the end and backwards, we expect the method return types to be the parametric type for TypedArrayCollection"
+	
+	collectionVariable := TypedArrayCollection with: 'hello' with: 'world!!'.
+	
+	self
+		assertEntriesWhenBrowsing: 'm1 (collectionVariable atLast: 1) '
+		areSelectorsOf: String.
+
+	self
+		assertEntriesWhenBrowsing: 'm1 1 < (collectionVariable atLast: 1) '
+		areUnaryAndBinarySelectorsOf: String.! !
+
+!CollectionLiveTypingCompleterTest methodsFor: 'as yet unclassified' stamp: 'alf & mds 7/22/2020 10:21:24'!
+test007BinaryMessage
+	
+	"when analyzing binary messages and parenthesis, the return type of the first argument is considered and not the entire expression"
+	
+	instanceVariable1 := 'hello'.
+	
+	self
+		assertEntriesWhenBrowsing: 'm1 (instanceVariable1 indexOf: ''e'') '
+		areSelectorsOf: SmallInteger.
+
+	self
+		assertEntriesWhenBrowsing: 'm1 1 < (instanceVariable1 indexOf: ''e'') '
+		areUnaryAndBinarySelectorsOf: SmallInteger.
+		! !
+
+!CollectionLiveTypingCompleterTest methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 18:53:05'!
+typesOf: class at: selector
+	| typeInfo firstType|
+	typeInfo := (class returnTypeInfoAt: selector) types.
+	typeInfo ifNotEmpty: [
+	firstType := typeInfo first.
+	(typeInfo first isKindOf: ParameterizedType) ifTrue: [
+		^ firstType innerTypes.
+		]
+	].
+	^ typeInfo! !
+
 !CollectionLiveTypingTest methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:33:05'!
 cleanUp: aClass method: aMethodSymbol
 
@@ -374,7 +565,7 @@ cleanUp: aClass method: aMethodSymbol
 		(1 to: 10) do: [ :index | returnRawTypes at: index put: nil].
 	]! !
 
-!CollectionLiveTypingTest methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:23:04'!
+!CollectionLiveTypingTest methodsFor: 'as yet unclassified' stamp: 'ald & mtqp 6/15/2020 16:53:49'!
 setUp
 
 	| aTestClassInstanceVariableRawTypes |
@@ -383,7 +574,8 @@ setUp
 	
 	self cleanUp: Collection class method: #with:.
 	self cleanUp: Collection class method: #with:with:.
-	
+	self cleanUp: Collection class method: #with:with:with:.
+		
 	ATestClassForCollections initializeTypeInformationWithAllInstances.	
 	aTestClassInstanceVariableRawTypes := ATestClassForCollections instanceVariablesRawTypes at: 1.
 	(1 to: 10) do: [ :index | aTestClassInstanceVariableRawTypes at: index put: nil].
@@ -394,6 +586,24 @@ setUp
 tearDown
 
 	self setUp.! !
+
+!CollectionLiveTypingTest class methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 19:18:49'!
+findMethod: aMethodSelector inClass: aClass
+
+| classImplementor index method found|
+method := nil.
+classImplementor := aClass.
+index :=5.
+found := false.
+[index > 0 and: [found not]] whileTrue: [
+	found := true.
+	method := classImplementor methodDict at: aMethodSelector ifAbsent: [
+			classImplementor := classImplementor superclass.
+			index := index -1.
+			found := false.
+		].
+	].
+^ method.! !
 
 !LiveTypeTests methodsFor: 'as yet unclassified' stamp: 'alf & mds 2/5/2020 19:59:29'!
 test001SameType
@@ -625,16 +835,19 @@ return: anObject
 returnCollection
 	^ TypedArrayCollection new.! !
 
-!LiveTypingCollectionTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:22:55'!
+!LiveTypingCollectionTests methodsFor: 'as yet unclassified' stamp: 'alf&mtqp 5/31/2020 19:18:50'!
 setUp
 
-	||
+	| instanceVariableRawTypes |
 	
 	super setUp.
 		
 	"This is required for cleaning up the temp variables of each testing method"
 	LiveTypingCollectionTests initializeTypeInformationWithAllInstances.
 	AnotherTestClassForCollections initializeTypeInformationWithAllInstances.
+
+	instanceVariableRawTypes := AnotherTestClassForCollections instanceVariablesRawTypes at: 1.
+	(1 to: 10) do: [ :index | instanceVariableRawTypes at: index put: nil].
 
 	 "TODO: This has to be here for now because of the with: method. We are yet to understand why the with: in Collection is creating aliasing. "
 "	Collection class initializeTypeInformationWithAllInstances."
@@ -1353,7 +1566,7 @@ test003AnEmptyCollectionsContentType
 	rawTypes := Array with: TypedArrayCollection new contentTypes.
 	self assert: liveTypes equals: (RawToLiveTypesAdapter new adapt: rawTypes)! !
 
-!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 17:38:48'!
+!RawToLiveTypesAdapterTests methodsFor: 'as yet unclassified' stamp: 'alf&mtqp 5/31/2020 17:57:51'!
 test004ClassesAndCollectionsContentType
 	| liveTypes rawTypes |
 	liveTypes := Set with: (GenericType for: TypedArrayCollection withTypes: EmptyType new) with: (FixedType for: String).
@@ -1837,6 +2050,20 @@ test001
 	aVar add: 42.
 	self assert: aVar doSomething equals: 34 hash.! !
 
+!ParameterizedType methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 17:21:08'!
+initializeWith: rawTypes
+
+	types := rawTypes.! !
+
+!ParameterizedType methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 18:52:46'!
+innerTypes
+	^ types.
+	! !
+
+!ParameterizedType class methodsFor: 'as yet unclassified' stamp: 'AF & MDS 7/12/2020 17:12:24'!
+with: rawTypes
+	^self new initializeWith: rawTypes.! !
+
 !ATestClassForCollections methodsFor: 'as yet unclassified' stamp: 'ALF - MDS 10/20/2019 17:33:22'!
 rawTypes
 
@@ -1953,10 +2180,6 @@ isAssigned
 
 	^ isAssigned.! !
 
-!CollectionsContentType methodsFor: 'accessing' stamp: 'alf & mds 2/2/2020 21:02:35'!
-type
-	^ collectionType.! !
-
 !CollectionsContentType methodsFor: 'accessing' stamp: 'alf & mds 2/2/2020 21:01:22'!
 types
 	| aSet |
@@ -2001,6 +2224,20 @@ unify: anotherType
 		ifFalse: [
 			^ (anotherType isKindOf: UnionType)
 		]! !
+
+!ClassLiveType methodsFor: 'as yet unclassified' stamp: 'alf & mds 6/28/2020 19:13:37'!
+doesNotUnderstand: aMessage
+	"This message allows proxying every Array message we have yet to reimplement."
+
+	|selectorInClass|
+	
+	selectorInClass := class class lookupSelector: aMessage selector.
+	
+	selectorInClass ifNotNil: [
+		^ aMessage sendTo: class.
+		].
+	
+	^ super doesNotUnderstand: aMessage.! !
 
 !ClassLiveType methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/16/2020 13:48:21'!
 liveClass
@@ -2242,7 +2479,7 @@ print: liveTypes upTo: aNumberOfTypes
 	
 ! !
 
-!LiveTypesPrinter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/10/2020 09:58:10'!
+!LiveTypesPrinter methodsFor: 'as yet unclassified' stamp: 'alf&mtqp 5/31/2020 21:20:06'!
 print: typesTree withDelimiter: printDelimiter
 	| treeBound treeGenerics |
 	
@@ -2298,7 +2535,7 @@ visitUnionType: aUnionType
 on: aStream
 	^ self new initializeWith: aStream.! !
 
-!RawToLiveTypesAdapter methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 3/15/2020 22:32:19'!
+!RawToLiveTypesAdapter methodsFor: 'as yet unclassified' stamp: 'alf&mtqp 5/31/2020 18:03:14'!
 adapt: aRawTypes
 	| liveTypes |
 	aRawTypes ifEmpty: [^ Set with: (self create: nil) ].
@@ -2458,10 +2695,6 @@ sanitize: types
 		].
 	
 	^ sanitizedTypes! !
-
-!TypeNode methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:19:23'!
-type
-	^ type.! !
 
 !TypeNode class methodsFor: 'as yet unclassified' stamp: 'alf and mtqp 2/17/2020 19:14:30'!
 for: aTypeSet
